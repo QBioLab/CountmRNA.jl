@@ -3,6 +3,41 @@ using Plots
 using Images
 using ImageSegmentation
 
+"""
+Version Comment
+0.1		initial
+#TODO: add continue state space
+"""
+
+
+# Get living time
+livingtime(stack) = [ sum(stack[:, :, i])>0 for i in 1:size(stack)[3] ]
+
+"""
+Find long-lived trajactory
+"""
+function find_time_line(markers_t)
+    # search connected components in 3D space 
+    shortest_t = 90
+    time_line = label_components( markers_t.>0 )
+    line_amount = maximum(time_line)
+    # More advanced and fine punch and merge could be done
+    # But we just select long living trajactory, remove short-lived one
+    living_time =[ livingtime(time_line.==line) for line in 1:line_amount ]
+    living_length = [sum(living_time[line]) for line in 1:line_amount]
+    # label 0 mean background
+    shortlived = living_length .< shortest_t
+    longlived_label = (1:line_amount)[.~shortlived]
+    #longlived_time = living_time[]
+    for line in (1:line_amount)[shortlived]
+        time_line .*= (time_line.≠line)
+    end
+    time_line, longlived_label, live_time[longlived_label]
+end
+
+
+
+
 
 """
 Choose cloest neighborhood
