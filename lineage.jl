@@ -109,13 +109,6 @@ function get_unique_label(_old_labels)
     i
 end
 
-"""
-"""
-function traverse()
-
-end
-
-
 
 """
 Choose cloest neighborhood

@@ -7,6 +7,7 @@ v0.2     hf, use exiftool instead of tiffcommit
 ref: http://web.mit.edu/jhawk/mnt/cgs/Image-ExifTool-6.99/html/exiftool_pod.html
     https://exiftool.org/TagNames/EXIF.html
     https://docs.openmicroscopy.org/ome-model/5.6.3/ome-tiff/specification.html
+    https://micro-manager.org/wiki/Micro-Manager_File_Formats
 """
 
 """

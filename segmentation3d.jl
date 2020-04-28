@@ -18,11 +18,11 @@ end
 
 function extract3dnucleus(stack)
     z_depth = 20
-    t_length = size(stack)[3] ÷ z_depth
+    t_len = size(stack)[3] ÷z_depth
     nucleus = zeros(size(stack))
-    thresholds = zeros(t_length)
+    thresholds = zeros(t_len)
     nucleus_3dmask = zeros(size(stack)[1], size(stack)[2], z_depth)
-    for i in 1:t_length
+    for i in 1:t_len
         nucleus_3dmask, thresholds[i] = create3dmask(stack[:, :,(i-1)*20+1:20*i])
         nucleus[:,:,(i-1)*20+1:20*i] = nucleus_3dmask .* stack[:, :,(i-1)*20+1:20*i]
     end
