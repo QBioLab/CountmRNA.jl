@@ -61,7 +61,8 @@ function embedxml(SizeX::Integer, SizeY::Integer, SizeZ::Integer, SizeT::Integer
     if Sys.which("exiftool") == Nothing
         print("Please install exiftool")
     else
-        run(`exiftool -ImageDescription=$tiffxml $img_name -overwrite_original`)
+        run(`exiftool -ImageDescription=$tiffxml $img_name -overwrite_original`, wait=false)
+		# just let exiftool run in background
         #run(`rm $img_name"_original"`)
     end
     nothing;
