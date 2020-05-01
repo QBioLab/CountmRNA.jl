@@ -41,22 +41,33 @@ function find_time_line(markers_t)
     line_amount = maximum(time_line)
     # More advanced and fine punch and merge could be done
     # But we just select long living trajactory, remove short-lived one
-    living_time =[ cal_livingtime(time_line.==line) for line in 1:line_amount ]
-    living_length = [sum(living_time[line]) for line in 1:line_amount]
+    # Calculate living length
+    xy = CartesianIndices(size(time_line)[1:2])
+    x_len, y_len, t_len = size(time_line)
+    n = zeros(Int64,t_len, line_amount+1)
     # label 0 mean background
-    shortlived = living_length .< shortest_t
-    longlived_label = (1:line_amount)[.~shortlived]
-    #longlived_time = living_time[]
-    for line in (1:line_amount)[shortlived]
-        time_line .*= (time_line.≠line)
+    @inbounds for t in 1:t_len
+        @inbounds for x in 1:x_len
+            @inbounds for y in 1:y_len
+            n[t, time_line[x,y, t]+1] += 1
+            end
+        end
+    end
+    living_time =[ n[:, line].>0 for line in 1:line_amount ]
+    longlived = [sum(living_time[line]) for line in 1:line_amount] .> shortest_t
+    longlived_label = (1:line_amount)[longlived]
+    # Remove shortlived branches 
+    @inbounds for I in CartesianIndices(size(time_line))
+        if time_line[I] ∉ longlived_label 
+            time_line[I] = 0
+        end
     end
     time_line, longlived_label, living_time[longlived_label], time_line_whole
 end
 
-
-#for old_label in old_labels
+"Split contacted cell by watershed"
 function split_contacted_cell!(old_time_line::Array{Int64,3}, 
-        old_longlived_labels::Array{Int64,1}, old_living_time::Array{Array{Bool,1},1},
+        old_longlived_labels::Array{Int64,1}, old_living_time::AbstractArray,
         old_time_line_whole::Array{Int64, 3} )
     t_len = size(old_time_line)[3]
     
@@ -94,29 +105,45 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
         if length(local_longlived_labels) > 0
             #TODO: what if all lines are shorter than 90 after breaking
             # remove old branch, old label, old living time.
-            old_time_line .-= (( old_time_line .== contacted_label ).*contacted_label)
-            old_time_line_whole  .-= (( old_time_line .== contacted_label ).*contacted_label)
+            @inbounds for point in eachindex(old_time_line)
+                if old_time_line[point] == contacted_label 
+                    old_time_line[point] = 0
+                    old_time_line_whole[point] = 0
+                end
+            end
+            #old_time_line_whole  .-= (( old_time_line .== contacted_label ).*contacted_label)
             index2remove =  old_longlived_labels .== contacted_label
             deleteat!( old_longlived_labels, index2remove )
             deleteat!( old_living_time, index2remove)
             for i in 1:length(local_longlived_labels)
                 global_label = get_unique_label(old_longlived_labels)
-                old_time_line .+= ((local_time_line .== local_longlived_labels[i]) .* global_label)
-                old_time_line_whole .+= ((local_time_line .== local_longlived_labels[i]) .* global_label)
+                @inbounds for point in eachindex(local_time_line)
+                    if local_time_line[point] == local_longlived_labels[i]
+                        old_time_line[point] = global_label
+                        old_time_line_whole[point] = global_label
+                    end
+                end
+                #old_time_line .+= ((local_time_line .== local_longlived_labels[i]) .* global_label)
+                #old_time_line_whole .+= ((local_time_line .== local_longlived_labels[i]) .* global_label)
                 push!( old_longlived_labels, global_label )
                 push!( old_living_time, local_living_time[i] )
                 println("Branch $contacted_label -> $global_label")
             end
-            # add marker to time_line_whole
+            # add remaining markers to time_line_whole
             for i in 1:maximum(local_time_line_whole)
-                if i ∉ old_longlived_labels
+                if i ∉ local_longlived_labels
                     global_label = get_unique_label(1:maximum(old_time_line_whole))
-                    old_time_line_whole .+=  ((local_time_line .== i) .* global_label)
+                    @inbounds for point in eachindex(local_time_line)
+                        if local_time_line[point] == i 
+                            old_time_line_whole[point] = global_label
+                        end
+                    end
+                    print("~")
                 end
+                print("=")
             end
         end
     end
-    # Should we return area_t rather than area_t.>0
     old_time_line, old_longlived_labels, old_living_time, old_time_line_whole
 end
 
@@ -128,7 +155,7 @@ function walking(_time_line, _longlived_labels, _livingtime)
     @inbounds for t in 1: length(_livingtime[1])
         tmp = component_centroids_lables(_time_line[:, :, t], _longlived_labels, _max_index)
         @inbounds for i in 1:length(_longlived_labels)
-            _tracks[:, t, i] = [tmp[i][1]  tmp[i][2]]
+            _tracks[:, t, i] = [ tmp[i][1]  tmp[i][2] ]
         end
     end
     _tracks #[pos, t, branch]
@@ -176,9 +203,16 @@ function pick_cells( _raw_imgs, _longlived_maps, _index, _tracks, _longlived_lab
 		# only choose frame when object exist
         bounder = box(_tracks[:, t, _index], h, w)
 		# how can I assign value directly instead of using .*
-        cell_img[:, :, (t-1)*z_depth+1:t*z_depth] = 
-			_raw_imgs[bounder[1], bounder[2], (t-1)*z_depth+1:t*z_depth] .*
-            (_longlived_maps[bounder[1], bounder[2], t] .== _longlived_labels[_index])
+        #cell_img[:, :, (t-1)*z_depth+1:t*z_depth] = 
+		#	_raw_imgs[bounder[1], bounder[2], (t-1)*z_depth+1:t*z_depth] .*
+        #    (_longlived_maps[bounder[1], bounder[2], t] .== _longlived_labels[_index])
+        for d₁ in bounder[1] 
+            for  d₂ in bounder[2]
+                if _longlived_maps[d₁, d₂] == _longlived_labels[_index]
+                    cell_img[d₁, d₂, (t-1)*z_depth+1:t*z_depth] = 0
+                end
+            end
+        end
     end
     cell_img
 end

@@ -9,25 +9,30 @@ v0.2    hf, add multithreads
 """
 
 function create3dmask(zstack)
+    #zstack = imfilter(zstack, Kernel.gaussian((2,2,2)))
     mask = zeros(size(zstack))
     #thresholds_z = [real(yen_threshold(zstack[:, :, i])) for i in 1:20]
-    threshold_3d = real(yen_threshold(zstack))
-    #threshold_3d = median(thresholds_z)
-    mask = opening(zstack .> threshold_3d)
-    #mask = zstack .> threshold_3d
+    thresholds_z = [real(otsu_threshold(imfilter(zstack[:, :, i], Kernel.gaussian(2)))) for i in 1:20]
+    #threshold_3d = real(yen_threshold(imfilter(zstack, Kernel.gaussian((2,2,1)))))
+    #thresholds_z = [real(yen_threshold(imfilter(zstack[:, :, i], Kernel.gaussian(2)))) for i in 1:20]
+    #threshold_3d = real(yen_threshold(zstack))
+    threshold_3d = maximum(thresholds_z) # choose clearest one
+    #mask = opening(zstack .> threshold_3d)
+    mask = zstack .> threshold_3d
     mask, threshold_3d
 end
 
 function extract3dnucleus(stack)
     z_depth = 20
     t_len = size(stack)[3] ÷z_depth
-    nucleus = zeros(size(stack))
-    thresholds = zeros(t_len)
+    nucleus = zeros(Float64, size(stack))
+    thresholds = zeros(Float64, t_len)
     #nucleus_3dmask = zeros(size(stack)[1], size(stack)[2], z_depth)
 	println("Extracting nucleus")
     Threads.@threads for i in 1:t_len
         nucleus_3dmask, thresholds[i] = create3dmask(stack[:, :,(i-1)*20+1:20*i])
         nucleus[:,:,(i-1)*20+1:20*i] = nucleus_3dmask .* stack[:, :,(i-1)*20+1:20*i]
+        GC.gc()
     end
     nucleus, thresholds
 end

@@ -31,18 +31,17 @@ function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Int)
     mask_edge = zeros(Int16, 1900, 1300, time);
     mask_markers = zeros(Int16, 1900, 1300, time);
 	GC.gc() # garbage clean imediately to avoid double free insize threads.@threads
-    Threads.@threads for i in 1:time
+    Threads.@threads for i in 1:time  #use 40 threads slow down speed. may due to gc time
 		# remove possion noise with median filter
 		#imgx = mapwindow(median!, stack[:, :, 20*(i-1)+14], (5,5));
 		imgx = mapwindow(median!, maximum(stack[:, :, 20*(i-1)+1:20*i],dims=3)[:,:,1], (5,5));
 		# using maximum z projection
 		# extract intensity info with LoG
-        imgx_log = imfilter(imgx, Kernel.LoG(40)) .< -1e-7 ;
+        mask_markers[:,:,i] = imfilter(imgx, Kernel.LoG(40)) .< -1e-7 ;
         #imgx_dist = distance_transform(feature_transform(imgx_log));
 		# filter markers for watershed
         #imgx_markers = label_components( imgx_dist .> 50);
 		#mask_markers[:,:,i] = imgx_markers
-		mask_markers[:,:,i] = imgx_log
         #imgx_segments = watershed( imfilter(1 .- imgx, Kernel.gaussian(9)), imgx_markers);
         #img_edge[:,:,i] = .~watershedborder(imgx_segments).*imgx;
         #mask_clear[:,:,i] = extract_nucleus( imgx, imgx_segments) .> 0;
@@ -53,6 +52,7 @@ function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Int)
     mask_markers;
 end
 
+# TODO: A simple version just use LoG then, only export only longlived and no branches cell.
 
 # TODO: run again and again until best fitting
 """
