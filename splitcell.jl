@@ -2,7 +2,7 @@ using FileIO
 using Images
 using ImageSegmentation
 using Statistics
-using HDF5
+#using HDF5
 
 """
 Version Comment
@@ -26,14 +26,14 @@ end
 Use LoG fiter raw image to extract cell
 """
 function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Int)
-	println("Applying LoG(40) at MZJ")
+	println("Applying LoG(40) at Maximum Z Projection")
     img_edge = zeros(N0f16, 1900, 1300, time);
     mask_edge = zeros(Int16, 1900, 1300, time);
     mask_markers = zeros(Int16, 1900, 1300, time);
 	GC.gc() # garbage clean imediately to avoid double free insize threads.@threads
-    Threads.@threads for i in 1:time  #use 40 threads slow down speed. may due to gc time
+    @inbounds Threads.@threads for i in 1:time  #use 40 threads slow down speed. may due to gc time
 		# remove possion noise with median filter
-		#imgx = mapwindow(median!, stack[:, :, 20*(i-1)+14], (5,5));
+		#imgx = maximum(stack[:, :, 20*(i-1)+1:20*i], dims=3)[:,:,1];
 		imgx = mapwindow(median!, maximum(stack[:, :, 20*(i-1)+1:20*i],dims=3)[:,:,1], (5,5));
 		# using maximum z projection
 		# extract intensity info with LoG

@@ -20,40 +20,40 @@ function component_lengths(img::AbstractArray{Int})
     n
 end
 """
-function get_unique_label(_old_labels)
+function get_unique_label(_old_labels, number::Int=1)
     i = 100 # start from 100 to distiguish with oldest labels
-    while(true)
-        if i in _old_labels
-            i+=1
-        else
-            break
-        end
+	labels = zeros(Integer, number)
+	for count in 1:number
+	    while( i ∈ _old_labels)
+        	i+=1
+		end
+		_old_labels = union(_old_labels, i)
+		labels[count] = i
     end
-    i
+    labels
 end
 
 "Find long-lived track by searching connected components in 3D"
 function find_time_line(markers_t)
-    shortest_t = 110
-    print("Finding connected component")
+    shortest_t = 90
+    println("Finding connected component")
     time_line = label_components( markers_t.>0 )
     time_line_whole = copy(time_line)
     line_amount = maximum(time_line)
     # More advanced and fine punch and merge could be done
     # But we just select long living trajactory, remove short-lived one
     # Calculate living length
-    xy = CartesianIndices(size(time_line)[1:2])
     x_len, y_len, t_len = size(time_line)
-    n = zeros(Int64,t_len, line_amount+1)
+    n = zeros(Int64, t_len, line_amount+1)
     # label 0 mean background
-    @inbounds for t in 1:t_len
+    @inbounds Threads.@threads for t in 1:t_len
         @inbounds for x in 1:x_len
             @inbounds for y in 1:y_len
-            n[t, time_line[x,y, t]+1] += 1
+            n[t, time_line[x, y, t]+1] += 1
             end
         end
     end
-    living_time =[ n[:, line].>0 for line in 1:line_amount ]
+    living_time =[ n[:, line].>0 for line in 2:line_amount+1 ]
     longlived = [sum(living_time[line]) for line in 1:line_amount] .> shortest_t
     longlived_label = (1:line_amount)[longlived]
     # Remove shortlived branches 
@@ -65,6 +65,16 @@ function find_time_line(markers_t)
     time_line, longlived_label, living_time[longlived_label], time_line_whole
 end
 
+function find_index4label(_labels)
+	index = 1
+	indexs = zeros(Int, maximum(_labels))
+	for label in _labels
+		indexs[label]=index
+		index+=1
+	end
+	indexs
+end
+
 "Split contacted cell by watershed"
 function split_contacted_cell!(old_time_line::Array{Int64,3}, 
         old_longlived_labels::Array{Int64,1}, old_living_time::AbstractArray,
@@ -72,15 +82,18 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
     t_len = size(old_time_line)[3]
     
     println("Detecting contacted branch")
-    conn_z_number = []; # mark connected components more than 1
-    for label in old_longlived_labels
-        branches = old_time_line .== label
-        push!(conn_z_number, [maximum(label_components(branches[:,:, i])) .> 1 for i in 1:t_len])
-    end
-    contacted_labels = old_longlived_labels[sum.(conn_z_number) .> 10]
+	conn_z_t = zeros(Int, length(old_longlived_labels),t_len)
+	label2index = find_index4label(old_longlived_labels)
+	@time for t in 1:t_len
+		Threads.@threads for label in old_longlived_labels
+			branches = old_time_line[:, :, t] .== label
+			conn_z_t[label2index[label], t] = maximum(label_components(branches))
+		end
+	end
+	contacted_labels = old_longlived_labels[sum(conn_z_t.>1, dims=2)[:] .> 10]
+    #If two more connected component touch to at same z slice more than 10 times
     print("Found contacted branch: ")
     println(contacted_labels)
-    # if two more connected component touch to at same z slice more than 10 times
     # select area longer than 5e4
     #old_label = longlived_label_2[mean.(area_longlived) .> 5e4 ]
     
@@ -111,37 +124,42 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
                     old_time_line_whole[point] = 0
                 end
             end
-            #old_time_line_whole  .-= (( old_time_line .== contacted_label ).*contacted_label)
             index2remove =  old_longlived_labels .== contacted_label
             deleteat!( old_longlived_labels, index2remove )
             deleteat!( old_living_time, index2remove)
             for i in 1:length(local_longlived_labels)
-                global_label = get_unique_label(old_longlived_labels)
-                @inbounds for point in eachindex(local_time_line)
+				global_label = get_unique_label(old_longlived_labels)[1]
+				# update time_line index 
+                @inbounds Threads.@threads for point in eachindex(local_time_line)
                     if local_time_line[point] == local_longlived_labels[i]
                         old_time_line[point] = global_label
                         old_time_line_whole[point] = global_label
-                    end
+					end
                 end
-                #old_time_line .+= ((local_time_line .== local_longlived_labels[i]) .* global_label)
-                #old_time_line_whole .+= ((local_time_line .== local_longlived_labels[i]) .* global_label)
                 push!( old_longlived_labels, global_label )
                 push!( old_living_time, local_living_time[i] )
                 println("Branch $contacted_label -> $global_label")
             end
+
             # add remaining markers to time_line_whole
-            for i in 1:maximum(local_time_line_whole)
+			local_label_max = maximum(local_time_line_whole)
+			global_label_max = maximum(old_time_line_whole)
+			tmp = get_unique_label(1:global_label_max, local_label_max - length(local_longlived_labels))
+			tmp_index = 1 
+			global_labels = zeros(Integer, local_label_max+1)
+            for i in 1:local_label_max
                 if i ∉ local_longlived_labels
-                    global_label = get_unique_label(1:maximum(old_time_line_whole))
-                    @inbounds for point in eachindex(local_time_line)
-                        if local_time_line[point] == i 
-                            old_time_line_whole[point] = global_label
-                        end
-                    end
-                    print("~")
+					# preserve 1th index for 0, so start at 2
+					global_labels[i+1] = tmp[tmp_index]
+					tmp_index += 1
+				end
+			end
+            @inbounds Threads.@threads for point in eachindex(local_time_line)
+				γ = global_labels[local_time_line_whole[point]+1] 
+				if γ ≠ 0
+                   old_time_line_whole[point] = γ
                 end
-                print("=")
-            end
+			end
         end
     end
     old_time_line, old_longlived_labels, old_living_time, old_time_line_whole
@@ -170,7 +188,7 @@ function grant_domain( _raw_imgs, _time_line, _longlived_labels, _livingtime, _t
     h, w = size(_raw_imgs[:,:,1]);
     watershed_maps = zeros(Integer, h, w, t_len)
     println("Grant domain for each detected cell by watershed")
-    Threads.@threads for t in 1:t_len 
+    @time @inbounds Threads.@threads for t in 1:t_len 
         print("-")
         watershed_maps[:, :, t] = labels_map(watershed(
                 .-maximum(_raw_imgs[:,:,z_depth*(t-1)+1:z_depth*t],dims=3)[:,:,1], _time_line_whole[:,:,t]) )
@@ -179,40 +197,54 @@ function grant_domain( _raw_imgs, _time_line, _longlived_labels, _livingtime, _t
 	println("")
 	println("Drawing longlived_maps")
     longlived_maps = zeros(Integer, h, w, t_len)
+	"""
     @inbounds for i in 1:length(_longlived_labels)
         print("-")
         label = _longlived_labels[i]
 		# Only choose frame when object exist
         Threads.@threads for t in (1:t_len)[_livingtime[i]]
                 longlived_maps[:, :, t] .+= (watershed_maps[:, :, t] .== label).*label
-				# TODO: swith to O(n)
         end
     end
+	"""
+	@inbounds Threads.@threads for I in eachindex(longlived_maps)
+        if watershed_maps[I] ∈ _longlived_labels
+			longlived_maps[I] = watershed_maps[I]
+        end
+    end
+
 	println(_longlived_labels)
-    longlived_maps
+    longlived_maps, watershed_maps
+    #longlived_maps
 end
 
 " Using given mask to export roi of cell "
-function pick_cells( _raw_imgs, _longlived_maps, _index, _tracks, _longlived_labels, _livingtime)
+function pick_cell(_raw_imgs::Array{Gray{Normed{UInt16,16}},3}, _longlived_maps::Array{Integer,3},
+					cell_label::Int64, cell_tracks::Array{Float64,2}, cell_livingtime::BitArray{1})
     z_depth = 20
-    t_len = length(_livingtime[1])
+    t_len = length(cell_livingtime)
     h, w = size(_raw_imgs[:, :, 1])
+    #cell_img = zeros(Gray{Normed{UInt16,16}}, 512, 512, t_len*z_depth)
     cell_img = zeros(512, 512, t_len*z_depth)
     
-    Threads.@threads for t in (1:t_len)[_livingtime[_index]] #TODO: mulit-threads error
+    #@inbounds Threads.@threads for t in (1:t_len)[cell_livingtime] 
+    for t in (1:t_len)[cell_livingtime]
+		#print("$t ")
 		# only choose frame when object exist
-        bounder = box(_tracks[:, t, _index], h, w)
-		# how can I assign value directly instead of using .*
+        bounder = box(cell_tracks[:, t], h, w)
         #cell_img[:, :, (t-1)*z_depth+1:t*z_depth] = 
 		#	_raw_imgs[bounder[1], bounder[2], (t-1)*z_depth+1:t*z_depth] .*
         #    (_longlived_maps[bounder[1], bounder[2], t] .== _longlived_labels[_index])
-        for d₁ in bounder[1] 
-            for  d₂ in bounder[2]
-                if _longlived_maps[d₁, d₂] == _longlived_labels[_index]
-                    cell_img[d₁, d₂, (t-1)*z_depth+1:t*z_depth] = 0
+        @inbounds for d₁ in bounder[1] 
+            @inbounds for  d₂ in bounder[2]
+                if _longlived_maps[d₁, d₂, t] == cell_label
+					z = ((t-1)*z_depth+1):(t*z_depth)
+					cell_img[d₁, d₂, z] = copy(_raw_imgs[d₁, d₂, z])
                 end
             end
         end
+		#z = ((t-1)*z_depth+1):(t*z_depth)
+		#cell_img[:, :, z] = copy(_raw_imgs[bounder[1], bounder[2], z])
     end
     cell_img
 end
@@ -232,10 +264,10 @@ function component_centroids_lables(img::AbstractArray{Int,N}, labels::AbstractA
 end
 
 " Return box with fixed height and width"
-function box(_center, _d₁max, _d₂max)
+function box(cell_center, _d₁max, _d₂max)
     α = 256 
     Α = 2*α 
-    d₁, d₂ = Int.(floor.(_center))
+    d₁, d₂ = Int.(floor.(cell_center))
     d₁min, d₁max, d₂min, d₂max = d₁-α+1, d₁+α,  d₂-α+1, d₂+α
     if d₁min < 1
         d₁max = Α
@@ -255,8 +287,6 @@ function box(_center, _d₁max, _d₂max)
     end
     d₁min:d₁max, d₂min:d₂max
 end
-
-
 
 """
 Choose cloest neighborhood
