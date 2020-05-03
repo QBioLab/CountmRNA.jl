@@ -61,7 +61,7 @@ function embedxml(SizeX::Integer, SizeY::Integer, SizeZ::Integer, SizeT::Integer
     if Sys.which("exiftool") == Nothing
         print("Please install exiftool")
     else
-        run(`exiftool -ImageDescription=$tiffxml $img_name -overwrite_original`, wait=false)
+		run(`exiftool -ImageDescription=$tiffxml $img_name -overwrite_original`, wait=false)
 		# run in backgroud to continue next computing work
         # I assume that run computing takes more time to embed xml
         #run(`rm $img_name"_original"`)

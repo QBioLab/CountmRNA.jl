@@ -71,20 +71,6 @@ function extract_nucleus( img, watershed_segments::SegmentedImage{Array{Int64,2}
     img_clear;
 end
 
-"""
-Just remove regions are small
-"""
-function remove_small_area(mask)
-    mask_con = label_components(mask);
-    mask_res = BitArray(undef, size(mask));
-    mask_res .= false;cd
-    for i in 1:maximum(mask_con)
-        if sum(mask_con .== i) > 5e3
-            mask_res .+= (mask_con.==i);
-        end
-    end
-    mask_res;
-end
 #data_dir = "/datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF";
 #img_16_2 = load(File(format"TIFF", "$data_dir/20200316/HE7-11-1-80uw-PWM_1_s2.ome.tiff"));
 

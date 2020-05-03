@@ -224,27 +224,28 @@ function pick_cell(_raw_imgs::Array{Gray{Normed{UInt16,16}},3}, _longlived_maps:
     z_depth = 20
     t_len = length(cell_livingtime)
     h, w = size(_raw_imgs[:, :, 1])
-    #cell_img = zeros(Gray{Normed{UInt16,16}}, 512, 512, t_len*z_depth)
-    cell_img = zeros(512, 512, t_len*z_depth)
+    cell_img = zeros(Gray{Normed{UInt16,16}}, 512, 512, t_len*z_depth)
+    #cell_img = zeros(512, 512, t_len*z_depth)
     
-    #@inbounds Threads.@threads for t in (1:t_len)[cell_livingtime] 
-    for t in (1:t_len)[cell_livingtime]
+    @inbounds Threads.@threads for t in (1:t_len)[cell_livingtime] 
+    #for t in (1:t_len)[cell_livingtime]
 		#print("$t ")
 		# only choose frame when object exist
         bounder = box(cell_tracks[:, t], h, w)
         #cell_img[:, :, (t-1)*z_depth+1:t*z_depth] = 
 		#	_raw_imgs[bounder[1], bounder[2], (t-1)*z_depth+1:t*z_depth] .*
         #    (_longlived_maps[bounder[1], bounder[2], t] .== _longlived_labels[_index])
+		d₁ref = (bounder[1])[1] -1
+		d₂ref = (bounder[2])[1] -1
+		z = (t-1)*z_depth+1 : t*z_depth
         @inbounds for d₁ in bounder[1] 
             @inbounds for  d₂ in bounder[2]
                 if _longlived_maps[d₁, d₂, t] == cell_label
-					z = ((t-1)*z_depth+1):(t*z_depth)
-					cell_img[d₁, d₂, z] = copy(_raw_imgs[d₁, d₂, z])
+					#cell_img[d₁-d₁ref, d₂-d₂ref, z] = copy(_raw_imgs[d₁, d₂, z])
+					cell_img[d₁-d₁ref, d₂-d₂ref, z] = _raw_imgs[d₁, d₂, z]
                 end
             end
         end
-		#z = ((t-1)*z_depth+1):(t*z_depth)
-		#cell_img[:, :, z] = copy(_raw_imgs[bounder[1], bounder[2], z])
     end
     cell_img
 end
