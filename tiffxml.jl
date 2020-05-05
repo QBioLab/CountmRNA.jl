@@ -47,7 +47,18 @@ function generatexml(SizeX::Integer, SizeY::Integer, SizeZ::Integer, SizeT::Inte
     for i in 1:SizeC*SizeZ*SizeT
         new_child(Pixels, "TiffData")
     end
-    
+	"""
+	for c in 0:SizeC-1
+    	for t in 0:SizeT-1
+        	for z in 0:SizeZ-1
+               TiffData = new_child(Pixels, "TiffData")
+               TiffData_attributes = Dict("FirstC"=>c, "FirstT"=>t, "FirstZ"=>z, 
+										  "IFD"=>t*SizeZ+z,"PlaneCount"=>1)
+                set_attributes(TiffData, TiffData_attributes)
+            end
+        end
+    end
+	"""
     tiffXML;
 end
 
@@ -62,6 +73,8 @@ function embedxml(SizeX::Integer, SizeY::Integer, SizeZ::Integer, SizeT::Integer
         print("Please install exiftool")
     else
 		run(`exiftool -ImageDescription=$tiffxml $img_name -overwrite_original`, wait=false)
+		#run(pipeline(`echo $tiffxml`, `exiftool -ImageDescription\<= $img_name -overwrite_original`), wait=false)
+		#run(`ulimit -s 65536 ; exiftool -ImageDescription\<= $img_name -overwrite_original`, wait=true)
 		# run in backgroud to continue next computing work
         # I assume that run computing takes more time to embed xml
         #run(`rm $img_name"_original"`)

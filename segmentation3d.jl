@@ -14,10 +14,14 @@ function create3dmask(zstack)
     mask = zeros(size(zstack))
     #thresholds_z = [real(yen_threshold(zstack[:, :, i])) for i in 1:20]
 	thresholds_z = zeros(Float64, z_depth)
-	@inbounds Threads.@threads for z in 1:z_depth
+	#@inbounds Threads.@threads for z in 1:z_depth
+	@inbounds for z in 1:z_depth
 		zstack[:,:,z] = imfilter(zstack[:, :, z], Kernel.gaussian(2))
-		thresholds_z[z] = real(otsu_threshold( 
-			zstack[81:end-81,81:end-81,z][(zstack[81:end-81, 81:end-81,  z] .> 0.001)] ))
+		select_pixels = zstack[81:end-81, 81:end-81,  z] .> 0.001
+		if sum(select_pixels) > 2e2
+			thresholds_z[z] = real(otsu_threshold( 
+				zstack[81:end-81,81:end-81,z][select_pixels]))
+		end
 	end
     #threshold_3d = real(yen_threshold(imfilter(zstack, Kernel.gaussian((2,2,1)))))
     #threshold_3d = real(yen_threshold(zstack))
@@ -36,6 +40,7 @@ function extract3dnucleus(stack)
     #nucleus_3dmask = zeros(size(stack)[1], size(stack)[2], z_depth)
 	println("Extracting nucleus")
     @inbounds Threads.@threads for i in 1:t_len
+    #@inbounds for i in 1:t_len
 		z = (i-1)*20+1 : 20*i
         nucleus_3dmask, thresholds[i] = create3dmask(stack[:, :, z])
         nucleus[:, :, z] = nucleus_3dmask .* stack[:, :, z]
@@ -51,7 +56,7 @@ function remove_small_area!(mask)
     #mask_res = BitArray(undef, size(mask));
     #mask_res .= false;
     con_size = component_lengths(mask_con)
-    selected_con = (1:length(con_size))[con_size .> 5e4]
+    selected_con = (0:length(con_size)-1)[con_size .> 2e4]
     """
     for i in 1:maximum(mask_con)
         if sum(mask_con .== i) > 5e3
@@ -59,7 +64,8 @@ function remove_small_area!(mask)
         end
     end
     """
-    @inbounds Threads.@threads for i in 1:length(mask)
+    #@inbounds Threads.@threads for i in 1:length(mask)
+    @inbounds for i in 1:length(mask)
         if mask_con[i] ∉ selected_con
             mask[i] = false
         end

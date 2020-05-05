@@ -35,7 +35,7 @@ end
 
 "Find long-lived track by searching connected components in 3D"
 function find_time_line(markers_t)
-    shortest_t = 90
+    shortest_t = 100
     println("Finding connected component")
     time_line = label_components( markers_t.>0 )
     time_line_whole = copy(time_line)
