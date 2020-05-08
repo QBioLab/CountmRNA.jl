@@ -88,7 +88,7 @@ function normalize(imgs)
     d1_len, d2_len  = size(imgs)[1],  size(imgs)[2]
     low_line, mean_line = extract_feature(imgs)
     corrected_low_line, corrected_mean_line = correct_feature(low_line, mean_line)
-    imgs_norm = zeros(Float64 ,size(imgs))
+    imgs_norm = zeros(N0f16, size(imgs))
 	imgs_len = length(imgs_norm[:, :, 1:z_depth])
     @inbounds Threads.@threads for t in 1:t_len
 		z = (t-1)*20+1 : 20*t

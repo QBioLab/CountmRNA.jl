@@ -11,13 +11,13 @@ v0.2    hf, add multithreads
 function create3dmask(zstack)
     #zstack = imfilter(zstack, Kernel.gaussian((2,2,2)))
 	z_depth = 20
-    mask = zeros(size(zstack))
+    local mask = zeros(size(zstack))
     #thresholds_z = [real(yen_threshold(zstack[:, :, i])) for i in 1:20]
-	thresholds_z = zeros(Float64, z_depth)
+	local thresholds_z = zeros(Float64, z_depth)
 	#@inbounds Threads.@threads for z in 1:z_depth
 	@inbounds for z in 1:z_depth
 		zstack[:,:,z] = imfilter(zstack[:, :, z], Kernel.gaussian(2))
-		select_pixels = zstack[81:end-81, 81:end-81,  z] .> 0.001
+		local select_pixels = zstack[81:end-81, 81:end-81,  z] .> 0.001
 		if sum(select_pixels) > 2e2
 			thresholds_z[z] = real(otsu_threshold( 
 				zstack[81:end-81,81:end-81,z][select_pixels]))
@@ -35,15 +35,22 @@ end
 function extract3dnucleus(stack)
     z_depth = 20
     t_len = size(stack)[3] ÷z_depth
-    nucleus = zeros(Float64, size(stack))
-    thresholds = zeros(Float64, t_len)
+    local nucleus = zeros(Gray{Normed{UInt16,16}}, size(stack))
+	local nucleus_len = length(stack)
+    local thresholds = zeros(Float64, t_len)
     #nucleus_3dmask = zeros(size(stack)[1], size(stack)[2], z_depth)
 	println("Extracting nucleus")
-    @inbounds Threads.@threads for i in 1:t_len
+    @inbounds Threads.@threads for t in 1:t_len
     #@inbounds for i in 1:t_len
-		z = (i-1)*20+1 : 20*i
-        nucleus_3dmask, thresholds[i] = create3dmask(stack[:, :, z])
-        nucleus[:, :, z] = nucleus_3dmask .* stack[:, :, z]
+		local z = (t-1)*20+1 : 20*t
+        nucleus_3dmask, thresholds[t] = create3dmask(stack[:, :, z])
+        #nucleus[:, :, z] = nucleus_3dmask .* stack[:, :, z]
+		#for i in 1:nucleus_len
+		for i in eachindex(nucleus_3dmask)
+			if nucleus_3dmask[i]
+				nucleus[i] = stack[i]
+			end
+		end
     end
     nucleus, thresholds
 end
@@ -57,13 +64,6 @@ function remove_small_area!(mask)
     #mask_res .= false;
     con_size = component_lengths(mask_con)
     selected_con = (0:length(con_size)-1)[con_size .> 2e4]
-    """
-    for i in 1:maximum(mask_con)
-        if sum(mask_con .== i) > 5e3
-            mask_res .+= (mask_con.==i);
-        end
-    end
-    """
     #@inbounds Threads.@threads for i in 1:length(mask)
     @inbounds for i in 1:length(mask)
         if mask_con[i] ∉ selected_con
@@ -71,6 +71,43 @@ function remove_small_area!(mask)
         end
     end
     mask
+end
+
+"""
+Computes threshold for grayscale image using Otsu's method. (modify from Imagas.jl)
+Parameters:
+-    img         = Grayscale input image
+-    bins        = Number of bins used to compute the histogram. Needed for floating-point images.
+"""
+function otsu_threshold2(img::AbstractArray{T, N}, min, bins::Int = 256) where {T<:Union{Gray,Real}, N}
+
+    #min, max = extrema(img)
+    max = maximum(img)
+    edges, counts = imhist(img, range(gray(min), stop=gray(max), length=bins))
+    histogram = counts./sum(counts)
+
+    ω0 = 0
+    μ0 = 0
+    μt = 0
+    μT = sum((1:(bins+1)).*histogram)
+    max_σb=0.0
+    thres=1
+
+    for t in 1:bins
+        ω0 += histogram[t]
+        ω1 = 1 - ω0
+        μt += t*histogram[t]
+
+        σb = (μT*ω0-μt)^2/(ω0*ω1)
+
+        if(σb > max_σb)
+            max_σb = σb
+            thres = t
+        end
+    end
+
+    return T((edges[thres-1]+edges[thres])/2)
+	# what is T?
 end
 
 #s3c2 = load("../mRNA_confocal_hamamatsu-60X-TIRF/20200316_result/s3_c2.tiff");

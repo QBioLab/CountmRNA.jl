@@ -1,4 +1,3 @@
-using FileIO
 using Images
 using ImageSegmentation
 
@@ -35,27 +34,27 @@ end
 
 "Find long-lived track by searching connected components in 3D"
 function find_time_line(markers_t)
-    shortest_t = 100
+    local shortest_t = 100
     println("Finding connected component")
-    time_line = label_components( markers_t.>0 )
-    time_line_whole = copy(time_line)
-    line_amount = maximum(time_line)
+    local time_line = label_components( markers_t.>0 )
+    local time_line_whole = copy(time_line)
+    local line_amount = maximum(time_line)
     # More advanced and fine punch and merge could be done
     # But we just select long living trajactory, remove short-lived one
     # Calculate living length
     x_len, y_len, t_len = size(time_line)
-    n = zeros(Int64, t_len, line_amount+1)
+    local n = zeros(Int64, t_len, line_amount+1)
     # label 0 mean background
     @inbounds Threads.@threads for t in 1:t_len
         @inbounds for x in 1:x_len
             @inbounds for y in 1:y_len
-            n[t, time_line[x, y, t]+1] += 1
+            	n[t, time_line[x, y, t]+1] += 1
             end
         end
     end
     living_time =[ n[:, line].>0 for line in 2:line_amount+1 ]
     longlived = [sum(living_time[line]) for line in 1:line_amount] .> shortest_t
-    longlived_label = (1:line_amount)[longlived]
+    local longlived_label = (1:line_amount)[longlived]
     # Remove shortlived branches 
     @inbounds for I in CartesianIndices(size(time_line))
         if time_line[I] ∉ longlived_label 
@@ -82,11 +81,11 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
     t_len = size(old_time_line)[3]
     
     println("Detecting contacted branch")
-	conn_z_t = zeros(Int, length(old_longlived_labels),t_len)
-	label2index = find_index4label(old_longlived_labels)
+	local conn_z_t = zeros(Int, length(old_longlived_labels),t_len)
+	local label2index = find_index4label(old_longlived_labels)
 	@time for t in 1:t_len
 		Threads.@threads for label in old_longlived_labels
-			branches = old_time_line[:, :, t] .== label
+			local branches = old_time_line[:, :, t] .== label
 			conn_z_t[label2index[label], t] = maximum(label_components(branches))
 		end
 	end
@@ -100,9 +99,9 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
     # split 3d branch by split 2d cell slice by slice
     for contacted_label in contacted_labels
         dist_const = 30 # distance constant 
-        contacted_branch = old_time_line .==  contacted_label
-        dist  = zeros(size( contacted_branch ))
-        local_markers = zeros(Bool, size( contacted_branch ))
+        local contacted_branch = old_time_line .==  contacted_label
+        local dist  = zeros(size( contacted_branch ))
+        local local_markers = zeros(Bool, size( contacted_branch ))
         println("Splitting branch $contacted_label now")
         Threads.@threads for  t in 1:t_len # TODO: only split when connected component descrease
             dist[:,:, t] = distance_transform(feature_transform(.~contacted_branch[:,:,t]))
@@ -162,7 +161,8 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
 			end
         end
     end
-    old_time_line, old_longlived_labels, old_living_time, old_time_line_whole
+    #old_time_line, old_longlived_labels, old_living_time, old_time_line_whole
+	nothing
 end
 
 
@@ -197,16 +197,6 @@ function grant_domain( _raw_imgs, _time_line, _longlived_labels, _livingtime, _t
 	println("")
 	println("Drawing longlived_maps")
     longlived_maps = zeros(Integer, h, w, t_len)
-	"""
-    @inbounds for i in 1:length(_longlived_labels)
-        print("-")
-        label = _longlived_labels[i]
-		# Only choose frame when object exist
-        Threads.@threads for t in (1:t_len)[_livingtime[i]]
-                longlived_maps[:, :, t] .+= (watershed_maps[:, :, t] .== label).*label
-        end
-    end
-	"""
 	@inbounds Threads.@threads for I in eachindex(longlived_maps)
         if watershed_maps[I] ∈ _longlived_labels
 			longlived_maps[I] = watershed_maps[I]
@@ -287,81 +277,4 @@ function box(cell_center, _d₁max, _d₂max)
         d₂max = _d₂max
     end
     d₁min:d₁max, d₂min:d₂max
-end
-
-"""
-Choose cloest neighborhood
-"""
-function find_nearest(root, next_level, maxdistance)
-    nucleus_distance = [sum(abs.(root .- next_level[i])) for i in 1:length(next_level)]
-    mindist, mindist_index = findmin(nucleus_distance);
-    if mindist < maxdistance
-        return mindist_index
-    else
-        return nothing
-    end
-end
-
-"""
-Find every child with given root
-"""
-function buildtree(root::Int, position)
-    tree = []
-    height = length(position)
-    level = 2
-    child = find_nearest(position[1][root], position[level], 100);
-    while( child ≠ nothing && level<height)
-        push!(tree, child)
-        child = find_nearest(position[level][child], position[level+=1], 100)
-        #print("$level ")
-    end
-    tree
-end
-
-"""
-Extract long-life path
-"""
-function generate_path(pos_map)
-    all_path = []
-    for root in 1:length(pos_map[1])
-        tree = buildtree(root, pos_map);
-        if length(tree) > 70
-            path = [pos_map[i+1][tree[i]] for i in 1:length(tree) ];
-            push!(all_path, path)
-        end
-    end
-    all_path;
-end
-
-"""
-Using given mask to export roi of cell 
-"""
-function export_cell(track, imgs, edge_mask)
-    height, width = size(imgs[:,:,1]);
-    crop_img = zeros(700, 700, length(track)*20);
-    for t in 1:length(track)
-        x, y = Int.(floor.(track[t]));
-        xmin, xmax, ymin, ymax = x-349 , x+350,  y-349, y+350
-        if xmin < 1
-            xmax = xmax - xmin + 1
-            xmin = 1
-        end
-        if xmax > 1900
-            xmin = xmin - (xmax-1900)
-            xmax = 1900
-        end
-        if ymin < 1
-            ymax = ymax - ymin +1
-            ymin = 1
-        end
-        if ymax > 1300
-            ymin = ymin - (ymax-1300)
-            ymax = 1300
-        end
-        masked_cell= (edge_mask[:,:,t] .== edge_mask[x, y, t] )
-        for i in 1:20
-            crop_img[:,:,20*(t-1)+i] =(masked_cell.*imgs[:,:,20*(t-1)+i])[xmin:xmax, ymin:ymax]
-        end
-    end
-    crop_img;
 end

@@ -25,16 +25,17 @@ end
 """
 Use LoG fiter raw image to extract cell
 """
-function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Int)
+function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Integer)
 	println("Applying LoG(40) at Maximum Z Projection")
-    img_edge = zeros(N0f16, 1900, 1300, time);
-    mask_edge = zeros(Int16, 1900, 1300, time);
-    mask_markers = zeros(Int16, 1900, 1300, time);
+    #img_edge = zeros(N0f16, 1900, 1300, time);
+    #mask_edge = zeros(Int16, 1900, 1300, time);
+    local mask_markers = zeros(Bool, 1900, 1300, time);
 	GC.gc() # garbage clean imediately to avoid double free insize threads.@threads
     @inbounds Threads.@threads for i in 1:time  #use 40 threads slow down speed. may due to gc time
+    #@inbounds for i in 1:time  #use 40 threads slow down speed. may due to gc time
 		# remove possion noise with median filter
 		#imgx = maximum(stack[:, :, 20*(i-1)+1:20*i], dims=3)[:,:,1];
-		imgx = mapwindow(median!, maximum(stack[:, :, 20*(i-1)+1:20*i],dims=3)[:,:,1], (5,5));
+		local imgx = mapwindow(median!, maximum(view(stack, :, :, 20*(i-1)+1:20*i),dims=3)[:,:,1], (5,5));
 		# using maximum z projection
 		# extract intensity info with LoG
         mask_markers[:,:,i] = imfilter(imgx, Kernel.LoG(40)) .< -1e-7 ;
@@ -53,23 +54,6 @@ function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Int)
 end
 
 # TODO: A simple version just use LoG then, only export only longlived and no branches cell.
-
-# TODO: run again and again until best fitting
-"""
-Extract nucleus from sperated cell
-"""
-function extract_nucleus( img, watershed_segments::SegmentedImage{Array{Int64,2},Float64} )
-    img_clear = zeros(N0f16, size(watershed_segments.image_indexmap));
-    img_blur = imfilter(img, Kernel.gaussian(9));
-    for label in watershed_segments.segment_labels
-        cell = img_blur .* (watershed_segments.image_indexmap .== label);
-        # only select 70% brigter region or fixed area
-        gmm = GMM(3, [pixel for pixel in real(cell) if pixel > 1e-5]);
-        nucleus_th = sort(gmm.μ, dims=1)[end-1];
-        img_clear .+= ( remove_small_area(cell .> nucleus_th)) .*img;
-    end
-    img_clear;
-end
 
 #data_dir = "/datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF";
 #img_16_2 = load(File(format"TIFF", "$data_dir/20200316/HE7-11-1-80uw-PWM_1_s2.ome.tiff"));
