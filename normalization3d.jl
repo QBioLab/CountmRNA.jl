@@ -3,6 +3,7 @@ Normalize brightness for each time point
 Version Comment
 0.1     hf, initial version
 0.2     hf, don't use fitting
+0.2.1   hf, medianfilter with repeat padding
 """
 
 using Images
@@ -32,7 +33,8 @@ function extract_feature(imgs)
 end
 
 medianfilter1(v, ws) = [median(v[i:(i+ws-1)]) for i=1:(length(v)-ws+1) ]
-medianfilter(v, ws) = medianfilter1(vcat(0,v,0),ws)
+#medianfilter(v, ws) = medianfilter1(vcat(0,v,0),ws)
+medianfilter(v, ws) = medianfilter1(vcat(v[1], v, v[end]),ws) # repeat
 
 
 """

@@ -37,6 +37,6 @@ function playing(s)
 	GC.gc()
 end
 
-for i in 22:25
+for i in parse(Int, ARGS[1]):parse(Int, ARGS[2])
     playing(i)
 end
