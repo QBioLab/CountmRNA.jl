@@ -2,6 +2,7 @@
 Normalize brightness for each time point
 Version Comment
 0.1     hf, initial version
+0.2     hf, don't use fitting
 """
 
 using Images

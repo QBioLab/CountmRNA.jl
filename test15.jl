@@ -44,6 +44,7 @@ function playing(s)
 	nothing
 end
 
-for img in 26:40
-	@time playing(img)
+
+for img_index in parse(Int, ARGS[1]):parse(Int, ARGS[2])
+	@time playing(img_index)
 end

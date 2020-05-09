@@ -18,6 +18,7 @@ function create3dmask(zstack)
 	@inbounds for z in 1:z_depth
 		zstack[:,:,z] = imfilter(zstack[:, :, z], Kernel.gaussian(2))
 		local select_pixels = zstack[81:end-81, 81:end-81,  z] .> 0.001
+		thresholds_z[z]
 		if sum(select_pixels) > 2e2
 			thresholds_z[z] = real(otsu_threshold( 
 				zstack[81:end-81,81:end-81,z][select_pixels]))
@@ -44,11 +45,13 @@ function extract3dnucleus(stack)
     #@inbounds for i in 1:t_len
 		local z = (t-1)*20+1 : 20*t
         nucleus_3dmask, thresholds[t] = create3dmask(stack[:, :, z])
+		nucleus_t = view(nucleus, :,:,z)
+		stack_t = view(stack, :,:,z)
         #nucleus[:, :, z] = nucleus_3dmask .* stack[:, :, z]
 		#for i in 1:nucleus_len
 		for i in eachindex(nucleus_3dmask)
 			if nucleus_3dmask[i]
-				nucleus[i] = stack[i]
+				nucleus_t[i] = stack_t[i]
 			end
 		end
     end
@@ -83,7 +86,13 @@ function otsu_threshold2(img::AbstractArray{T, N}, min, bins::Int = 256) where {
 
     #min, max = extrema(img)
     max = maximum(img)
+	if max == 0 # avoid image without cell
+		return T(0)
+	end
     edges, counts = imhist(img, range(gray(min), stop=gray(max), length=bins))
+	if sum(counts)<2e2 # don't count small region
+		return T(0)
+	end
     histogram = counts./sum(counts)
 
     ω0 = 0
@@ -107,7 +116,6 @@ function otsu_threshold2(img::AbstractArray{T, N}, min, bins::Int = 256) where {
     end
 
     return T((edges[thres-1]+edges[thres])/2)
-	# what is T?
 end
 
 #s3c2 = load("../mRNA_confocal_hamamatsu-60X-TIRF/20200316_result/s3_c2.tiff");

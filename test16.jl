@@ -31,12 +31,12 @@ function playing(s)
 		@time cell_nu_nor, nor_para = normalize(cell_nu);
         save("$ret_dir/d16s$(s)-$index.jld", "threshold", cell_th, "normal", nor_para,
              "livingtime", livingtime[index])
-        save2ims(reinterpret.(reshape(cell_nu_nor, (512,512,20,t))), 
+        save2ims(reinterpret.(reshape(cell_nu_nor, (512,512,20,t_len))), 
                  "$ret_dir/d16s$(s)-$index.ims")
 	end
 	GC.gc()
 end
 
-for i in 21:40
+for i in 22:25
     playing(i)
 end
