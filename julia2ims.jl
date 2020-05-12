@@ -66,13 +66,13 @@ function  save2ims(array, fname::String="myfile.ims",
         ("DataSetInfo/TimeInfo", "FileTimePoints", nt)
     ];
 
-    COLORS = ("1 1 1", "1 0 1", "1 1 0", "0 0 1")
+    COLORS = ("1 1 1", "1 0 1", "1 0 0", "0 0 1")
     for c in 0:nc-1
         grp = "DataSetInfo/Channel $c"
         push!(GROUPS, grp)
         push!(ATTRS, (grp, "ColorOpacity", 1))
         push!(ATTRS, (grp, "ColorMode", "BaseColor"))
-        push!(ATTRS, (grp, "Color", COLORS[1]))
+        push!(ATTRS, (grp, "Color", COLORS[3]))
         push!(ATTRS, (grp, "GammaCorrection", 1))
         push!(ATTRS, (grp, "ColorRange", "0 255"))
         push!(ATTRS, (grp, "Name", "Channel $c"))
@@ -108,8 +108,8 @@ function  save2ims(array, fname::String="myfile.ims",
                     grp["Histogram"] = UInt64.(count[1:end])
                     h5a_write_S1(grp, "HistogramMin", "1000")
                     h5a_write_S1(grp, "HistogramMax", "$(edges[end])")
-                    #grp["Data", "chunk", (256,256,4), "compress", compression] = data
-                    grp["Data", "chunk", (256,256,4)] = data
+                    grp["Data", "chunk", (256,256,4), "compress", compression] = data
+                    #grp["Data", "chunk", (256,256,4)] = data
                     h5a_write_S1(grp, "ImageSizeX", "$(size(data)[1])")
                     h5a_write_S1(grp, "ImageSizeY", "$(size(data)[2])")
                     h5a_write_S1(grp, "ImageSizeZ", "$(size(data)[3])")

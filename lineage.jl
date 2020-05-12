@@ -5,6 +5,7 @@ using ImageSegmentation
 Version Comment
 0.1		initial
 0.2		extract time-lines and split contacted branches. hf@0427
+0.2.1	add error handle to avoid no longlived_cell hf@0512
 """
 
 # Get living time
@@ -34,7 +35,7 @@ end
 
 "Find long-lived track by searching connected components in 3D"
 function find_time_line(markers_t)
-    local shortest_t = 100
+    local shortest_t = 90
     println("Finding connected component")
     local time_line = label_components( markers_t.>0 )
     local time_line_whole = copy(time_line)
@@ -79,7 +80,9 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
         old_longlived_labels::Array{Int64,1}, old_living_time::AbstractArray,
         old_time_line_whole::Array{Int64, 3} )
     t_len = size(old_time_line)[3]
-    
+	if length(old_longlived_labels) == 0
+		println("No longlived cell is found, stopping")
+	end
     println("Detecting contacted branch")
 	local conn_z_t = zeros(Int, length(old_longlived_labels),t_len)
 	local label2index = find_index4label(old_longlived_labels)
@@ -89,7 +92,7 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
 			conn_z_t[label2index[label], t] = maximum(label_components(branches))
 		end
 	end
-	contacted_labels = old_longlived_labels[sum(conn_z_t.>1, dims=2)[:] .> 10]
+	contacted_labels = old_longlived_labels[sum(conn_z_t.>1, dims=2)[:] .> 3]
     #If two more connected component touch to at same z slice more than 10 times
     print("Found contacted branch: ")
     println(contacted_labels)
@@ -189,7 +192,7 @@ function grant_domain( _raw_imgs, _time_line, _longlived_labels, _livingtime, _t
     watershed_maps = zeros(Integer, h, w, t_len)
     println("Grant domain for each detected cell by watershed")
     @time @inbounds Threads.@threads for t in 1:t_len 
-        print("-")
+        #print("-")
         watershed_maps[:, :, t] = labels_map(watershed(
                 .-maximum(_raw_imgs[:,:,z_depth*(t-1)+1:z_depth*t],dims=3)[:,:,1], _time_line_whole[:,:,t]) )
     end

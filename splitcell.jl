@@ -47,7 +47,7 @@ function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Integer)
         #img_edge[:,:,i] = .~watershedborder(imgx_segments).*imgx;
         #mask_clear[:,:,i] = extract_nucleus( imgx, imgx_segments) .> 0;
 		#mask_edge[:,:,i] = imgx_segments.image_indexmap;
-        print("*");
+        #print("*");
     end
 	println("Done")
     mask_markers;
