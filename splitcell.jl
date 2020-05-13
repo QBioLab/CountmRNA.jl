@@ -29,7 +29,9 @@ function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Integer)
 	println("Applying LoG(40) at Maximum Z Projection")
     #img_edge = zeros(N0f16, 1900, 1300, time);
     #mask_edge = zeros(Int16, 1900, 1300, time);
-    local mask_markers = zeros(Bool, 1900, 1300, time);
+    h, w, d = size(stack)
+    local mask_markers = zeros(Bool, h, w, time);
+    #local mask_markers = zeros(Bool, 1900, 1300, time);
 	GC.gc() # garbage clean imediately to avoid double free insize threads.@threads
     @inbounds Threads.@threads for i in 1:time  #use 40 threads slow down speed. may due to gc time
     #@inbounds for i in 1:time  #use 40 threads slow down speed. may due to gc time

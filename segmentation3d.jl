@@ -29,8 +29,9 @@ function create3dmask(zstack)
     threshold_3d = maximum(thresholds_z) # choose clearest one
     #mask = opening(zstack .> threshold_3d)
     mask = zstack .> threshold_3d
-    remove_small_area!(mask)
-    mask, threshold_3d
+    #remove_small_area!(mask)
+    mask, mask_size = remove_small_area(mask)
+    mask, mask_size, threshold_3d
 end
 
 function extract3dnucleus(stack)
@@ -39,12 +40,13 @@ function extract3dnucleus(stack)
     local nucleus = zeros(Gray{Normed{UInt16,16}}, size(stack))
 	local nucleus_len = length(stack)
     local thresholds = zeros(Float64, t_len)
+    local mask_size = zeros(Float64, t_len)
     #nucleus_3dmask = zeros(size(stack)[1], size(stack)[2], z_depth)
 	println("Extracting nucleus")
     @inbounds Threads.@threads for t in 1:t_len
     #@inbounds for i in 1:t_len
 		local z = (t-1)*20+1 : 20*t
-        nucleus_3dmask, thresholds[t] = create3dmask(stack[:, :, z])
+		nucleus_3dmask, mask_size[t], thresholds[t] = create3dmask(stack[:, :, z])
 		nucleus_t = view(nucleus, :,:,z)
 		stack_t = view(stack, :,:,z)
         #nucleus[:, :, z] = nucleus_3dmask .* stack[:, :, z]
@@ -55,25 +57,29 @@ function extract3dnucleus(stack)
 			end
 		end
     end
-    nucleus, thresholds
+    nucleus, mask_size, thresholds
 end
 
 """
 Just remove small regions in binary images
 """
-function remove_small_area!(mask)
+#function remove_small_area!(mask)
+function remove_small_area(mask)
     mask_con = label_components(mask);
     #mask_res = BitArray(undef, size(mask));
     #mask_res .= false;
     con_size = component_lengths(mask_con)
     selected_con = (0:length(con_size)-1)[con_size .> 2e4]
     #@inbounds Threads.@threads for i in 1:length(mask)
+	local mask_size = 0
     @inbounds for i in 1:length(mask)
         if mask_con[i] ∉ selected_con
             mask[i] = false
+		else
+			mask_size += 1
         end
     end
-    mask
+    mask, mask_size
 end
 
 """

@@ -169,7 +169,7 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
 end
 
 
-"extract walking pathway"
+"extract walking pathway, [xy, time, labels]"
 function walking(_time_line, _longlived_labels, _livingtime)
     _tracks = zeros( 2, length(_livingtime[1]), length(_longlived_labels))
     _max_index = maximum(_time_line)

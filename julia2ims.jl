@@ -131,3 +131,25 @@ function h5a_write_S1(parent, key, value)
     end
     nothing
 end
+
+function str2int(str)
+    local tmp =""
+    for i in str
+        tmp=tmp*i
+    end
+    parse(Int, tmp)
+end
+
+function loadims(imsname::String)
+    local attr_t_len = h5readattr(imsname, "DataSetInfo/TimeInfo")["DatasetTimePoints"];
+    local t_len  = str2int(attr_t_len)
+    local z_depth = 20
+    local img = zeros(Gray{N0f16}, 1300, 1900, t_len*z_depth);
+    h5open(imsname) do imsfile
+        for i in 0:t_len-1
+			data = imsfile["DataSet/ResolutionLevel 0/TimePoint $i/Channel 0/Data"]
+            img[:, :, i*20+1:20*(i+1)] = reinterpret(N0f16,data[1:1300,1:1900,1:20]);
+        end
+    end
+    img
+end
