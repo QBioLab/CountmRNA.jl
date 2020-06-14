@@ -5,6 +5,7 @@ using Statistics
 #using HDF5
 
 """
+Use Laplace of Gaussian(LoG) filter extract cell from raw 3d image
 Version Comment
 0.1		initial 
 0.2		only LoG

@@ -153,3 +153,17 @@ function loadims(imsname::String)
     end
     img
 end
+
+function loadims2(imsname::String)
+    local attr_t_len = h5readattr(imsname, "DataSetInfo/TimeInfo")["DatasetTimePoints"];
+    local t_len  = str2int(attr_t_len)
+    local z_depth = 20
+    local img = zeros(Gray{N0f16}, 512, 512, t_len*z_depth);
+    h5open(imsname) do imsfile
+        for i in 0:t_len-1
+			data = imsfile["DataSet/ResolutionLevel 0/TimePoint $i/Channel 0/Data"]
+            img[:, :, i*20+1:20*(i+1)] = reinterpret(N0f16,data[1:512,1:512,1:20]);
+        end
+    end
+    img
+end
