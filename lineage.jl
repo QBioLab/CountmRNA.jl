@@ -11,15 +11,6 @@ Version Comment
 # Get living time
 cal_livingtime(stack) = [ sum(stack[:, :, i])>0 for i in 1:size(stack)[3] ]
 area_t(stack) = [ sum(stack[:, :, i]) for i in 1:size(stack)[3] ]
-"""
-function component_lengths(img::AbstractArray{Int})
-    n = zeros(Int64,maximum(img)+1)
-    for i=1:length(img)
-        n[img[i]+1]+=1
-    end
-    n
-end
-"""
 function get_unique_label(_old_labels, number::Int=1)
     i = 100 # start from 100 to distiguish with oldest labels
 	labels = zeros(Integer, number)
@@ -84,16 +75,17 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
 		println("No longlived cell is found, stopping")
 	end
     println("Detecting contacted branch")
-	local conn_z_t = zeros(Int, length(old_longlived_labels),t_len)
+	local conn_z_t = zeros(Int, length(old_longlived_labels), t_len)
 	local label2index = find_index4label(old_longlived_labels)
 	@time for t in 1:t_len
 		Threads.@threads for label in old_longlived_labels
 			local branches = old_time_line[:, :, t] .== label
+			# count connected component number of each time point
 			conn_z_t[label2index[label], t] = maximum(label_components(branches))
 		end
 	end
-	contacted_labels = old_longlived_labels[sum(conn_z_t.>1, dims=2)[:] .> 3]
-    #If two more connected component touch to at same z slice more than 10 times
+	contacted_labels = old_longlived_labels[ sum(conn_z_t.>1, dims=2)[:] .> 3 ]
+    #If two more connected component touch to at same z slice more than 3 times
     print("Found contacted branch: ")
     println(contacted_labels)
     # select area longer than 5e4
