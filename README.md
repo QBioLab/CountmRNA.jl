@@ -7,17 +7,18 @@ track cell in own algorithm and recognize mRNA with imaris.
 
 _You can take anything if can help your study! julia2ims.jl and tiffxml.jl
 might save your time if you work with imaris/imagej, even you are not
-intersting at cell track algorithm_
+intersting at cell track algorithm._
 
 ## Files
 
-| NAME              | FUNCTION
-| splitcell.jl      | Use Laplace of Gaussian(LoG) filter extract cell from raw 3d image
-| lineage.jl        | Use connected component to find each track and use watershed to split
-| segmentation3d.jl | Use Otsu-threshold to extract 3d nuclei 
-| normalization3d.jl| Normalize minimal and mean intensity of nuclei
-| julia2ims.jl      | Useful functions to load and save imaris 5 file
-| tiffxml.jl        | Useful functions to save tiff with OME-TIFF info
+| NAME              | FUNCTION |
+|-------------------|----------------------------------------------------------
+| splitcell.jl      | Use Laplace of Gaussian(LoG) filter extract cell from raw 3d image |
+| lineage.jl        | Use connected component to find each track and use watershed to split |
+| segmentation3d.jl | Use Otsu-threshold to extract 3d nuclei |
+| normalization3d.jl| Normalize minimal and mean intensity of nuclei |
+| julia2ims.jl      | Useful functions to load and save imaris 5 file |
+| tiffxml.jl        | Useful functions to save tiff with OME-TIFF info |
 
 
 ## Algorithm
@@ -66,12 +67,35 @@ flexible to set variable parameter for search RNA spot, we set minimal intensity
 and mean intensity of nuclei to certain value.
 
 ## Count mRNA spot with imaris
-Recognizing 3D object is beyond my knowledge and experiment, so I use imaris
-(Test on Imaris 9.5).
+In fact, at the begin, we try to use imaris do all the work, but imaris allocate
+huge memory during calculation and fail to handle photobleach and cell intensity
+variation. So we decide to simplify question: extract cell using own code, then
+just let imaris count mRNA spot. My limited experience and time also suggest me
+to use imaris at this time.
 
-Imaris Parameters:
+
+Creation Parameters:
+```
+[Algorithm]
+  Enable Region Of Interest = false
+  Enable Region Growing = false
+  Enable Tracking = false
+  Enable Region Growing = false
+  Enable Shortest Distance = false
+[Source Channel]
+  Source Channel Index = 1
+  Estimated XY Diameter = 0.540 um
+  Estimated Z Diameter = 1.50 um
+  Background Subtraction = false
+[Classify Spots]
+  # NOTE: The value are slight different among expriments
+  "Intensity Center Ch=1 Img=1" above 2000 
+  or
+  "Intensity Mean Ch=1 Img=1" above 1850 or 1950 or 1800
+```
 
 
 ## Licence
 MIT License
+
 Copyright (c) 2020 H.F.
