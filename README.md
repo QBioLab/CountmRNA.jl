@@ -1,5 +1,5 @@
 # CountmRNA.jl
-Our gene modulation project captured a series of 3D live cell fluorescence
+Our gene noise modulation project captured a series of 3D live cell fluorescence
 time-lapse image using spin-disk confocal. We aim to count mRNA number inside
 each nuclei during gene expression. Thanks to many other researches' work, we apply
 and modify algorithm to split each trajectory, extract nuclei, then recognize mRNA. 
@@ -8,7 +8,6 @@ This algorithm mainly uses morphology processing.
 Here is julia code for our algorithm. You can take anything to help your study!
 Even you don't care algorithm, `julia2ims.jl` and `tiffxml.jl` might save your
 day if you work with imaris/imagej.
-
 
 Red fluorescence prefixed with NLS are expressed to label nuclei, while mRNA are
 more brilliant. We use Andor spin-disk microscope, 60x TIRF objective,
@@ -26,6 +25,7 @@ about 130 time points(~ 20 hours).
 | normalization3d.jl| Normalize minimal and mean intensity of nuclei |
 | julia2ims.jl      | Useful functions to load and save imaris 5 file |
 | tiffxml.jl        | Useful functions to save tiff with OME-TIFF info |
+| test16.jl         | Completed work flow to extract and track nuclei  |
 | xxx.ipynp         | Debug file respond to each julia function, you can ignore them |
 
 ## Algorithm
@@ -52,33 +52,33 @@ number among each time slice for each trajectory, then they are split using a
 distance transform and resign new unique id. These trajectories are seeds to
 divide each cell in whole image.
 
-Thirdly, we use above trajectories as seeds/markers to performance watershed at
-each z-projection image. As a result, each detected cell occupy unique area in
-whole image without overlap.
+Thirdly, we use above trajectories as seeds/markers to perform watershed at each
+z-projection image. As a result, each detected cell occupy unique area without
+overlap in whole image, which called land mask. (Note: border mark don't equal
+to nuclei edge)
 
-Fourthly, pick single cell from watershed split image and apply otsu-threshold.
-Because otsu-threshold requires background and object information in image, we
-apply above watershed segmentation to obtain individual cell image contained
-nuclei, cytoplasm. We use watershed segmentation result at XY slice to mask 3D
-individual cell image from raw data, then use a 512x512x20 box to mask it again.
-Otsu-threshold is apply to individual cell to extract nuclei. Due to intensity
-variation and photobleach, otsu-threshold is calculated for each cell at each time
-independently. Final nuclei image are intensity larger than otsu-threshold,
-otherwise set to zero.
+Fourthly, backing to original 3D image(XYZ), we extend each 2D land mask to 3D
+and apply Otsu's method to separate nuclei. Otsu's method requires enough
+background and object information in image, this is why we keep both nuclei and
+cytoplasm inside land mask. We use a 512x512x20 box to mask land mask again,
+then Otsu's method is applied to original 3D image defined by final mask. Due to
+cell intensity variation and photobleach, threshold is calculated for each nuclei 
+and time point independently.
 
 Fifthly, normalize nuclei intensity for imaris analysis. Because imaris is not
-flexible to set variable parameter for search RNA spot, we set minimal intensity
-and mean intensity of nuclei to certain value.
+flexible to set variable parameter for search RNA spot, we normalize minimal
+intensity and mean intensity of nuclei to fixed value.
+
 
 ## Count mRNA spot with imaris
-In fact, at the begin, we try to use imaris do all the work, but imaris allocate
+In the original story, we try to use imaris do all the work, but imaris allocate
 huge memory during calculation and fail to handle photobleach and cell intensity
-variation. So we decide to simplify question: extract cell using own code, then
-just let imaris count mRNA spot. My limited experience and time also suggest me
-to use imaris at this time.
+variation. So we decide to simplify question: extract cell using own code and 
+just let imaris count mRNA spot. More, my limited experience and time also
+suggest me to use imaris at this time. Before load into imaris, I still need to
+remove some failed segmentation result by hand.
 
-
-Creation Parameters:
+Just use imaris' spot model, the creation Parameters are:
 ```
 [Algorithm]
   Enable Region Of Interest = false
@@ -97,6 +97,12 @@ Creation Parameters:
   or
   "Intensity Mean Ch=1 Img=1" above 1850 or 1950 or 1800
 ```
+
+## Known Issue and Todo
+1. fail to separate some collisions: may require fully watershed instead of
+just distance transform
+2. some dark line occur in middle of nuclei: may some biology feature
+3. fill hole inside neclei
 
 
 ## Licence
