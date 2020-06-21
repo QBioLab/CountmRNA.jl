@@ -3,8 +3,7 @@ Our gene noise modulation project captured a series of 3D live cell fluorescence
 time-lapse image using spin-disk confocal. We aim to count mRNA number inside
 each nuclei during gene expression. Thanks to many other researches' work, we apply
 and modify algorithm to split each trajectory, extract nuclei, then recognize mRNA. 
-This algorithm mainly uses morphology processing.
-
+This algorithm features on morphology processing.
 Here is julia code for our algorithm. You can take anything to help your study!
 Even you don't care algorithm, `julia2ims.jl` and `tiffxml.jl` might save your
 day if you work with imaris/imagej.
