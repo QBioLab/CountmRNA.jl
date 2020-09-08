@@ -12,7 +12,7 @@ day if you work with imaris/imagej.
 Red fluorescence prefixed with NLS are expressed to label nuclei, while mRNA are
 more brilliant. We use Andor spin-disk microscope, 60x TIRF objective,
 Hamamatsus Ocra Fusion 4(roi 1900x1300). Each position capture 20 z slices and
-about 130 time points(~ 20 hours).
+about 110 time points(~ 18 hours).
 
 
 ## Files
