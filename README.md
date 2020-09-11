@@ -2,10 +2,10 @@
 Our gene noise modulation project captured a series of 3D live cell fluorescence
 time-lapse image using spin-disk confocal. We aim to count mRNA number inside
 each nuclei during gene expression. Thanks to many other researches' work, we apply
-and modify algorithm to split each trajectory, extract nuclei, then recognize mRNA. 
+and adjust algorithm to split each trajectory, extract nuclei, then recognize mRNA. 
 This algorithm features on morphology processing.
 
-Here is julia code for our algorithm. You can take anything to help your study!
+There are our algorithm in julia code. You are free to take anything to help your study!
 Even you don't care algorithm, `julia2ims.jl` and `tiffxml.jl` might save your
 day if you work with imaris/imagej.
 
@@ -13,7 +13,6 @@ Red fluorescence prefixed with NLS are expressed to label nuclei, while mRNA are
 more brilliant. We use Andor spin-disk microscope, 60x TIRF objective,
 Hamamatsus Ocra Fusion 4(roi 1900x1300). Each position capture 20 z slices and
 about 110 time points(~ 18 hours).
-
 
 ## Files
 
@@ -25,12 +24,15 @@ about 110 time points(~ 18 hours).
 | normalization3d.jl| Normalize minimal and mean intensity of nuclei |
 | julia2ims.jl      | Useful functions to load and save imaris 5 file |
 | tiffxml.jl        | Useful functions to save tiff with OME-TIFF info |
-| test16.jl         | Completed work flow to extract and track nuclei  |
-| xxx.ipynp         | Debug file respond to each julia function, you can ignore them |
+| CountmRNA.jl         | Completed pipline to extract and track nuclei  |
+| deprecations.jl   | Deprecated functons collections |
+| ims2info.ipynb    | Extract Imaris data to matlab .mat files |
+| notebook/xxx.ipynp| Debug files respond to each julia function, you can ignore them |
+
 
 ## Algorithm
 Algorithm is special to our data feature and analysis target, which try to low
-compute complexity but not for general case. In our strategy, we project 4D
+compute complexity but not for general case. In our strategy, we first project 4D
 image(XYZT) into 3D image(XYT) to simplify problem, then search connected components
 in projected image to locate each cell/nuclei trajectory and border. At the end,
 benefiting from known trajectory and border, segmentation can be limited in
@@ -38,22 +40,22 @@ local. We apply common Otsu's method at each marked space in original data,
 which separates reliable 3D nuclei out of cytoplasm background in spite of cell
 intensity variation and photobleach.
 
-Firstly, extract binary nuclei mask from raw image. We apply medium filter(5) and
-LoG filter(40) on z projected image. 
+Firstly, extract binary nuclei mask from raw image. We apply medium filter(size=5) and
+LoG filter(gamma=40) on z-projected image. 
 
 Secondly, we search connected component as cell trajectories in 3D image(XYT).
-Because cells move slow and occupy large area(under 60X objective), using
+Because cells move slow(large overlap between frame) and occupy large area(under 60X objective), using
 connected component do work correctly. More, comparing finding closest neighbour
 by cell centroid, its direct and completed logic help to handle cell come/leave
 from image border. Each detected connected components are assigned unique id. By
 filtering connected component length in time dimension, short trajectories are
-remove. Then possible collisions are detected by scanning connected component
+removed. Then possible collisions are detected by scanning connected component
 number among each time slice for each trajectory, then they are split using a
-distance transform and resign new unique id. These trajectories are seeds to
+distance transform and resign new unique id. These trajectories are the seeds to
 divide each cell in whole image.
 
 Thirdly, we use above trajectories as seeds/markers to perform watershed at each
-z-projection image. As a result, each detected cell occupy unique area without
+z-projected image. As a result, each detected cell occupy unique area without
 overlap in whole image, which called land mask. (Note: border mark don't equal
 to nuclei edge)
 
@@ -71,14 +73,14 @@ intensity and mean intensity of nuclei to fixed value.
 
 
 ## Count mRNA spot with imaris
-In the original story, we try to use imaris do all the work, but imaris allocate
-huge memory during calculation and fail to handle photobleach and cell intensity
-variation. So we decide to simplify question: extract cell using own code and 
+Before we have these code, we tried to use Imaris for all these work, but Imaris allocated
+huge memory for calculation and failed to handle photobleach and cell intensity
+variaction. So we decide to simplify question: extract cell using own code and 
 just let imaris count mRNA spot. More, my limited experience and time also
 suggest me to use imaris at this time. Before load into imaris, I still need to
 remove some failed segmentation result by hand.
 
-Just use imaris' spot model, the creation Parameters are:
+Just use Imaris' spot model, the creation Parameters are:
 ```
 [Algorithm]
   Enable Region Of Interest = false
@@ -97,6 +99,10 @@ Just use imaris' spot model, the creation Parameters are:
   or
   "Intensity Mean Ch=1 Img=1" above 1850 or 1950 or 1800
 ```
+
+## Citation
+MSB-20-9991, Wei Huang, Quantitative Control of Noise in Mammalian Gene Expression by Dynamic Histone Regulations
+
 
 ## Known Issue and Todo
 1. fail to separate some collisions: may require fully watershed instead of
