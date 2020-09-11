@@ -1,4 +1,6 @@
 # CountmRNA.jl
+[![DOI](https://zenodo.org/badge/255479900.svg)](https://zenodo.org/badge/latestdoi/255479900)
+
 Our gene noise modulation project captured a series of 3D live cell fluorescence
 time-lapse image using spin-disk confocal. We aim to count mRNA number inside
 each nuclei during gene expression. Thanks to many other researches' work, we apply
