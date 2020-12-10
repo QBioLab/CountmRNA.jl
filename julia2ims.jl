@@ -13,7 +13,7 @@ TODO: genrate thumb and fix timestamps
 """
 
 "Save 4D UInt16 Array(x,y,z,t) to .ims file"
-function  save2ims(array, fname::String="myfile.ims", 
+function  save2ims(array, fname::String="myfile.ims";
               subsamp=((1, 1, 1)),
               chunks=((16, 128, 128)),
               compression=2,
@@ -96,7 +96,8 @@ function  save2ims(array, fname::String="myfile.ims",
             h5a_write_S1(file[grp], key, value)
         end
 
-        file["Thumbnail/Data"] = UInt8.(maximum(array[:,:, 1:20,1], dims=3).>>8)
+        #file["Thumbnail/Data"] = UInt8.(maximum(array[:,:, 1:20,1], dims=3).>>8)
+        file["Thumbnail/Data"] = UInt8.(maximum(array[:,:, 1:end,1], dims=3).>>8)
 
         # add data
         for t in 0:nt-1
