@@ -141,18 +141,25 @@ function str2int(str)
     parse(Int, tmp)
 end
 
+"Load imaris file to multi dimension image"
 function loadims(imsname::String)
     local attr_t_len = h5readattr(imsname, "DataSetInfo/TimeInfo")["DatasetTimePoints"];
+    local attr_x_len = h5readattr(imsname, "DataSetInfo/Image")["X"];
+    local attr_y_len = h5readattr(imsname, "DataSetInfo/Image")["Y"];
+    local attr_z_len = h5readattr(imsname, "DataSetInfo/Image")["Z"];
     local t_len  = str2int(attr_t_len)
-    local z_depth = 20
-    local img = zeros(Gray{N0f16}, 1300, 1900, t_len*z_depth);
-    h5open(imsname) do imsfile
-        for i in 0:t_len-1
-			data = imsfile["DataSet/ResolutionLevel 0/TimePoint $i/Channel 0/Data"]
-            img[:, :, i*20+1:20*(i+1)] = reinterpret(N0f16,data[1:1300,1:1900,1:20]);
+    local x_depth = str2int(attr_x_len)
+    local y_depth = str2int(attr_y_len)
+    local z_depth = str2int(attr_z_len)
+    local img = zeros(Gray{N0f16}, x_depth, y_depth, z_depth, t_len);
+    h5open(imsname, "r") do imsfile
+        for i in 1:t_len
+            data = read(imsfile, 
+                        "DataSet/ResolutionLevel 0/TimePoint $(i-1)/Channel 0/Data")
+            img[:, :, :, i] = reinterpret(N0f16, data)
         end
     end
-    img
+    return img
 end
 
 function loadims2(imsname::String)

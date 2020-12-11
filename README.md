@@ -1,5 +1,4 @@
 # CountmRNA.jl
-[![DOI](https://zenodo.org/badge/255479900.svg)](https://zenodo.org/badge/latestdoi/255479900)
 
 Our gene noise modulation project captured a series of 3D live cell fluorescence
 time-lapse image using spin-disk confocal. We aim to count mRNA number inside
@@ -26,7 +25,7 @@ about 110 time points(~ 18 hours).
 | normalization3d.jl| Normalize minimal and mean intensity of nuclei |
 | julia2ims.jl      | Useful functions to load and save imaris 5 file |
 | tiffxml.jl        | Useful functions to save tiff with OME-TIFF info |
-| CountmRNA.jl         | Completed pipline to extract and track nuclei  |
+| CountmRNA.jl      | Completed pipline to extract and track nuclei  |
 | deprecations.jl   | Deprecated functons collections |
 | ims2info.ipynb    | Extract Imaris data to matlab .mat files |
 | notebook/xxx.ipynp| Debug files respond to each julia function, you can ignore them |
@@ -101,10 +100,6 @@ Just use Imaris' spot model, the creation Parameters are:
   or
   "Intensity Mean Ch=1 Img=1" above 1850 or 1950 or 1800
 ```
-
-## Citation
-MSB-20-9991, Wei Huang, Quantitative Control of Noise in Mammalian Gene Expression by Dynamic Histone Regulations
-
 
 ## Known Issue and Todo
 1. fail to separate some collisions: may require fully watershed instead of

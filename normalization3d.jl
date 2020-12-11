@@ -15,13 +15,11 @@ using Clustering
 Extract feature from image
 """
 function extract_feature(imgs)
-    z_depth = 20
-    t_len = size(imgs)[3] ÷ z_depth
+    z_depth, t_len = size(imgs)[3:4]
     low_line = zeros(t_len)
     mean_line  = zeros(t_len)
     @inbounds Threads.@threads for t in 1:t_len
-        #nozeros_pixel = [real(i) for i in imgs[:,:, (t-1)*20+1:20*t] if i ≠ 0]
-		nozeros_pixel = imgs[:,:, (t-1)*20+1:20*t][imgs[:,:, (t-1)*20+1:20*t].≠0]
+		nozeros_pixel = imgs[:,:,:,t][imgs[:,:,:,t].≠0]
 		if length(nozeros_pixel) == 0 
 			#println("no cell in time point $t")
 			continue # skip empty stack
@@ -85,22 +83,24 @@ function correct_feature( low_line, mean_line, fitted::Bool=false )
     corrected_low_line, corrected_mean_line
 end
 
+"Normalize nucleus to uniform intensity"
 function normalize(imgs)
-    z_depth = 20
-    t_len = size(imgs)[3] ÷ z_depth
-    d1_len, d2_len  = size(imgs)[1],  size(imgs)[2]
+    #z_depth = 20
+    #t_len = size(imgs)[3] ÷ z_depth
+    #d1_len, d2_len  = size(imgs)[1],  size(imgs)[2]
+    d1_len, d2_len, z_depth, t_len = size(imgs)
     low_line, mean_line = extract_feature(imgs)
     corrected_low_line, corrected_mean_line = correct_feature(low_line, mean_line)
     imgs_norm = zeros(N0f16, size(imgs))
-	imgs_len = length(imgs_norm[:, :, 1:z_depth])
+	imgs_len = length(imgs_norm[:, :, :, 1])
     @inbounds Threads.@threads for t in 1:t_len
-		z = (t-1)*20+1 : 20*t
 		"""
+		z = (t-1)*20+1 : 20*t
         imgs_norm[:,:,z] = ((imgs[:,:,z] .- corrected_low_line[t]) ./ (corrected_mean_line[t]-corrected_low_line[t]).*0.005 .+ 0.02) .* ( imgs[:, :, z] .>0)
         #print("$t ")
 		"""
-		tmp = view(imgs, :, :, z)
-		tmp_norm = view(imgs_norm, :, :, z)
+		tmp = view(imgs, :, :, :, t)
+		tmp_norm = view(imgs_norm, :, :, :, t)
 		for i in 1:imgs_len
 			if tmp[i] > 0
 				tmp_norm_value = (tmp[i] - corrected_low_line[t]) / 

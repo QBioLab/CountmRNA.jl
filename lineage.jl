@@ -25,8 +25,7 @@ function get_unique_label(_old_labels, number::Int=1)
 end
 
 "Find long-lived track by searching connected components in 3D"
-function find_time_line(markers_t)
-    local shortest_t = 90
+function find_time_line(markers_t; shortest=90)
     println("Finding connected component")
     local time_line = label_components( markers_t.>0 )
     local time_line_whole = copy(time_line)
@@ -45,7 +44,7 @@ function find_time_line(markers_t)
         end
     end
     living_time =[ n[:, line].>0 for line in 2:line_amount+1 ]
-    longlived = [sum(living_time[line]) for line in 1:line_amount] .> shortest_t
+    longlived = [sum(living_time[line]) for line in 1:line_amount] .> shortest
     local longlived_label = (1:line_amount)[longlived]
     # Remove shortlived branches 
     @inbounds for I in CartesianIndices(size(time_line))
@@ -72,7 +71,7 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
         old_time_line_whole::Array{Int64, 3} )
     t_len = size(old_time_line)[3]
 	if length(old_longlived_labels) == 0
-		println("No longlived cell is found, stopping")
+		println("No longlived cell is found, skipping")
 	end
     println("Detecting contacted branch")
 	local conn_z_t = zeros(Int, length(old_longlived_labels), t_len)
@@ -177,16 +176,15 @@ end
 
 
 " 分封领地"
-function grant_domain( _raw_imgs, _time_line, _longlived_labels, _livingtime, _time_line_whole)
-    z_depth = 20
-    t_len = length(_livingtime[1])
-    h, w = size(_raw_imgs[:,:,1]);
+function grant_domain( _raw_imgs::Array{Gray{Normed{UInt16,16}},4}, 
+                      _time_line, _longlived_labels, _livingtime, _time_line_whole)
+    h, w, z_depth, t_len = size(_raw_imgs)
     watershed_maps = zeros(Integer, h, w, t_len)
     println("Grant domain for each detected cell by watershed")
     @time @inbounds Threads.@threads for t in 1:t_len 
         #print("-")
         watershed_maps[:, :, t] = labels_map(watershed(
-                .-maximum(_raw_imgs[:,:,z_depth*(t-1)+1:z_depth*t],dims=3)[:,:,1], _time_line_whole[:,:,t]) )
+                .-maximum(_raw_imgs[:,:,:,t],dims=3)[:,:,1], _time_line_whole[:,:,t]) )
     end
     
 	println("")
@@ -204,30 +202,23 @@ function grant_domain( _raw_imgs, _time_line, _longlived_labels, _livingtime, _t
 end
 
 " Using given mask to export roi of cell "
-function pick_cell(_raw_imgs::Array{Gray{Normed{UInt16,16}},3}, _longlived_maps::Array{Integer,3},
+function pick_cell(_raw_imgs::Array{Gray{Normed{UInt16,16}},4}, _longlived_maps::Array{Integer,3},
 					cell_label::Int64, cell_tracks::Array{Float64,2}, cell_livingtime::BitArray{1})
-    z_depth = 20
-    t_len = length(cell_livingtime)
-    h, w = size(_raw_imgs[:, :, 1])
-    cell_img = zeros(Gray{Normed{UInt16,16}}, 512, 512, t_len*z_depth)
-    #cell_img = zeros(512, 512, t_len*z_depth)
-    
+    h, w, z_depth, t_len = size(_raw_imgs)
+    roi = 240
+    cell_img = zeros(Gray{Normed{UInt16,16}}, 2*roi, 2*roi, z_depth, t_len)
     @inbounds Threads.@threads for t in (1:t_len)[cell_livingtime] 
-    #for t in (1:t_len)[cell_livingtime]
-		#print("$t ")
 		# only choose frame when object exist
-        bounder = box(cell_tracks[:, t], h, w)
+        bounder = box(cell_tracks[:, t], h, w, α=roi)
         #cell_img[:, :, (t-1)*z_depth+1:t*z_depth] = 
 		#	_raw_imgs[bounder[1], bounder[2], (t-1)*z_depth+1:t*z_depth] .*
         #    (_longlived_maps[bounder[1], bounder[2], t] .== _longlived_labels[_index])
 		d₁ref = (bounder[1])[1] -1
 		d₂ref = (bounder[2])[1] -1
-		z = (t-1)*z_depth+1 : t*z_depth
         @inbounds for d₁ in bounder[1] 
             @inbounds for  d₂ in bounder[2]
                 if _longlived_maps[d₁, d₂, t] == cell_label
-					#cell_img[d₁-d₁ref, d₂-d₂ref, z] = copy(_raw_imgs[d₁, d₂, z])
-					cell_img[d₁-d₁ref, d₂-d₂ref, z] = _raw_imgs[d₁, d₂, z]
+					cell_img[d₁-d₁ref, d₂-d₂ref, :, t] = _raw_imgs[d₁, d₂, :, t]
                 end
             end
         end
@@ -238,7 +229,6 @@ end
 "`component_centroids(labeled_array)` -> an array of centroids for selected lables, excluding the background label 0"
 function component_centroids_lables(img::AbstractArray{Int,N}, labels::AbstractArray{Int, 1}, max_index::Integer) where N
     len = length(0:maximum(max_index))
-    #len = length(0:maximum(labels))
     n = fill(zero(CartesianIndex{N}), len)
     counts = fill(0, len)
     @inbounds for I in CartesianIndices(size(img))
@@ -250,8 +240,7 @@ function component_centroids_lables(img::AbstractArray{Int,N}, labels::AbstractA
 end
 
 " Return box with fixed height and width"
-function box(cell_center, _d₁max, _d₂max)
-    α = 256 
+function box(cell_center, _d₁max, _d₂max; α=256)
     Α = 2*α 
     d₁, d₂ = Int.(floor.(cell_center))
     d₁min, d₁max, d₂min, d₂max = d₁-α+1, d₁+α,  d₂-α+1, d₂+α

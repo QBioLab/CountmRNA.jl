@@ -26,22 +26,21 @@ end
 """
 Use LoG fiter raw image to extract cell
 """
-function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Integer)
+function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},4}; 
+                        LoG::Integer=40, thres = -2e-7)
 	println("Applying LoG(40) at Maximum Z Projection")
     #img_edge = zeros(N0f16, 1900, 1300, time);
     #mask_edge = zeros(Int16, 1900, 1300, time);
-    h, w, d = size(stack)
+    h, w, d, time = size(stack)
     local mask_markers = zeros(Bool, h, w, time);
-    #local mask_markers = zeros(Bool, 1900, 1300, time);
 	GC.gc() # garbage clean imediately to avoid double free insize threads.@threads
-    @inbounds Threads.@threads for i in 1:time  #use 40 threads slow down speed. may due to gc time
-    #@inbounds for i in 1:time  #use 40 threads slow down speed. may due to gc time
+    @inbounds Threads.@threads for t in 1:time  #use 40 threads slow down speed. may due to gc time
 		# remove possion noise with median filter
-		#imgx = maximum(stack[:, :, 20*(i-1)+1:20*i], dims=3)[:,:,1];
-		local imgx = mapwindow(median!, maximum(view(stack, :, :, 20*(i-1)+1:20*i),dims=3)[:,:,1], (5,5));
 		# using maximum z projection
+		local imgx = mapwindow(median!, 
+                               maximum(view(stack, :, :, :, t), dims=3)[:,:,1], (5,5));
 		# extract intensity info with LoG
-        mask_markers[:,:,i] = imfilter(imgx, Kernel.LoG(40)) .< -1e-7 ;
+        mask_markers[:,:,t] = imfilter(imgx, Kernel.LoG(LoG)) .< thres ;
         #imgx_dist = distance_transform(feature_transform(imgx_log));
 		# filter markers for watershed
         #imgx_markers = label_components( imgx_dist .> 50);
@@ -55,8 +54,6 @@ function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},3}, time::Integer)
 	println("Done")
     mask_markers;
 end
-
-# TODO: A simple version just use LoG then, only export only longlived and no branches cell.
 
 #data_dir = "/datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF";
 #img_16_2 = load(File(format"TIFF", "$data_dir/20200316/HE7-11-1-80uw-PWM_1_s2.ome.tiff"));

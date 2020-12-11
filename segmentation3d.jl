@@ -10,7 +10,8 @@ v0.2    hf, add multithreads
 
 function create3dmask(zstack)
     #zstack = imfilter(zstack, Kernel.gaussian((2,2,2)))
-	z_depth = 20
+	#z_depth = 20
+    z_depth = size(zstack)[3]
     local mask = zeros(size(zstack))
     #thresholds_z = [real(yen_threshold(zstack[:, :, i])) for i in 1:20]
 	local thresholds_z = zeros(Float64, z_depth)
@@ -19,7 +20,7 @@ function create3dmask(zstack)
 		zstack[:,:,z] = imfilter(zstack[:, :, z], Kernel.gaussian(2))
 		local select_pixels = zstack[81:end-81, 81:end-81,  z] .> 0.001
 		thresholds_z[z]
-		if sum(select_pixels) > 2e2
+		if sum(select_pixels) > 2e2 #TODO
 			thresholds_z[z] = real(otsu_threshold( 
 				zstack[81:end-81,81:end-81,z][select_pixels]))
 		end
@@ -35,8 +36,9 @@ function create3dmask(zstack)
 end
 
 function extract3dnucleus(stack)
-    z_depth = 20
-    t_len = size(stack)[3] ÷z_depth
+    #z_depth = 20
+    #t_len = size(stack)[3] ÷z_depth
+    z_depth,t_len = size(stack)[3:4]
     local nucleus = zeros(Gray{Normed{UInt16,16}}, size(stack))
 	local nucleus_len = length(stack)
     local thresholds = zeros(Float64, t_len)
@@ -44,13 +46,11 @@ function extract3dnucleus(stack)
     #nucleus_3dmask = zeros(size(stack)[1], size(stack)[2], z_depth)
 	println("Extracting nucleus")
     @inbounds Threads.@threads for t in 1:t_len
-    #@inbounds for i in 1:t_len
-		local z = (t-1)*20+1 : 20*t
-		nucleus_3dmask, mask_size[t], thresholds[t] = create3dmask(stack[:, :, z])
-		nucleus_t = view(nucleus, :,:,z)
-		stack_t = view(stack, :,:,z)
+		#local z = (t-1)*20+1 : 20*t
+		nucleus_3dmask, mask_size[t], thresholds[t] = create3dmask(stack[:, :, :, t])
+		nucleus_t = view(nucleus, :, :, :, t)
+		stack_t = view(stack, :, :, :, t)
         #nucleus[:, :, z] = nucleus_3dmask .* stack[:, :, z]
-		#for i in 1:nucleus_len
 		for i in eachindex(nucleus_3dmask)
 			if nucleus_3dmask[i]
 				nucleus_t[i] = stack_t[i]
