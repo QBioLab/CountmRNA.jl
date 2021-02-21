@@ -27,6 +27,7 @@ function  save2ims(array, fname::String="myfile.ims";
     nc = 1
     nr = 1     #nr = length(subsamp)
 
+    # GROUPS of Imaris file
     GROUPS = [
         "DataSetInfo",
         "Thumbnail",
@@ -35,7 +36,8 @@ function  save2ims(array, fname::String="myfile.ims";
         "DataSetInfo/Image",
         "DataSetInfo/TimeInfo"
     ]
-
+    
+    # Attributes of Imaris file
     ATTRS = [
         ("/", "ImarisDataSet", "ImarisDataSet"),
         ("/", "ImarisVersion", "5.5.0"),

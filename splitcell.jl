@@ -35,8 +35,7 @@ function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},4};
     local mask_markers = zeros(Bool, h, w, time);
 	GC.gc() # garbage clean imediately to avoid double free insize threads.@threads
     @inbounds Threads.@threads for t in 1:time  #use 40 threads slow down speed. may due to gc time
-		# remove possion noise with median filter
-		# using maximum z projection
+		# remove possion noise with median filter on maximum z-project image
 		local imgx = mapwindow(median!, 
                                maximum(view(stack, :, :, :, t), dims=3)[:,:,1], (5,5));
 		# extract intensity info with LoG
