@@ -9,13 +9,14 @@ using Images
 """
 Version Commit
 0.1		hf, first verion
+0.2     hf, update API to follow upstream HDF5.jl v0.15.4
 TODO: genrate thumb and fix timestamps
 """
 
 "Save 4D UInt16 Array(x,y,z,t) to .ims file"
 function  save2ims(array, fname::String="myfile.ims";
               subsamp=((1, 1, 1)),
-              chunks=((16, 128, 128)),
+              chunks=((128, 128, 5)),
               compression=2,
               thumbsize=256,
               dx=0.108, dz=0.5, dt_min=10)
@@ -89,7 +90,7 @@ function  save2ims(array, fname::String="myfile.ims";
 
     h5open(fname, "w") do file
          for grp in GROUPS
-            g_create(file, grp)
+            create_group(file, grp)
         end
 
         for info in ATTRS
@@ -98,8 +99,8 @@ function  save2ims(array, fname::String="myfile.ims";
             h5a_write_S1(file[grp], key, value)
         end
 
-        #file["Thumbnail/Data"] = UInt8.(maximum(array[:,:, 1:20,1], dims=3).>>8)
-        file["Thumbnail/Data"] = UInt8.(maximum(array[:,:, 1:end,1], dims=3).>>8)
+        file["Thumbnail/Data"] = UInt8.(maximum(array[:,:, 1:20,1], dims=3).>>8)
+        #file["Thumbnail/Data"] = UInt8.(maximum(rawview(array[:,:, 1:20,1]), dims=3).>>8)
 
         # add data
         for t in 0:nt-1
@@ -107,11 +108,11 @@ function  save2ims(array, fname::String="myfile.ims";
                 data = array[:, :, :, t+1]
                 for r in 0:nr-1
                     edges, count = build_histogram(data, 256)
-                    grp = g_create(file, "/DataSet/ResolutionLevel $r/TimePoint $t/Channel $c/")
+                    grp = create_group(file, "/DataSet/ResolutionLevel $r/TimePoint $t/Channel $c/")
                     grp["Histogram"] = UInt64.(count[1:end])
                     h5a_write_S1(grp, "HistogramMin", "1000")
                     h5a_write_S1(grp, "HistogramMax", "$(edges[end])")
-                    grp["Data", "chunk", (256,256,4), "compress", compression] = data
+                    grp["Data", chunk= chunks , compress=compression] = data
                     #grp["Data", "chunk", (256,256,4)] = data
                     h5a_write_S1(grp, "ImageSizeX", "$(size(data)[1])")
                     h5a_write_S1(grp, "ImageSizeY", "$(size(data)[2])")
@@ -125,10 +126,16 @@ end
 
 "Encode string with ASCII S1"
 function h5a_write_S1(parent, key, value)
-    dspace = dataspace((length(value),))
+    # https://support.hdfgroup.org/HDF5/doc1.6/UG/11_Datatypes.html
+    # https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
+    dspace = HDF5.dataspace((length(value),))
     try
-        attr = a_create(parent, key,  HDF5Datatype(HDF5.H5T_C_S1), dspace)
-        HDF5.writearray(attr, HDF5.H5T_C_S1, value)
+        #attr = create_attribute(parent, key, datatype(HDF5.H5T_CSET_ASCII), dspace)
+        #NOTE: datatype(obj) -> return the Datatype of obj
+        #      HDF5.Datatype(id) -> return Datatype responding to id
+        attr = create_attribute(parent, key, HDF5.Datatype(HDF5.H5T_C_S1), dspace)
+        #write(attr, "$value")
+        write_attribute(attr, HDF5.Datatype(HDF5.H5T_C_S1), "$value")
     finally
         close(dspace)
     end
