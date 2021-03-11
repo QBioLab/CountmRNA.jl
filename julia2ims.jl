@@ -3,6 +3,7 @@ using Dates
 using Images
 #https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5
 #https://imaris.oxinst.com/support/imaris-file-format
+# https://github.com/imaris/ImarisWriter/blob/master/doc/Imaris5FileFormat.pdf
 # https://docs.julialang.org/en/v1/stdlib/Dates/#Dates.format-Tuple{TimeType,AbstractString} 
 # https://cpb-us-w2.wpmucdn.com/sites.wustl.edu/dist/f/1861/files/2019/02/02-imaris-image-properties-and-edit-2jj1avj.pdf
 # https://github.com/tlambert03/imarispy/blob/master/imarispy/imaris.py
