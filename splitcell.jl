@@ -2,7 +2,6 @@ using FileIO
 using Images
 using ImageSegmentation
 using Statistics
-#using HDF5
 
 """
 Use Laplace of Gaussian(LoG) filter extract cell from raw 3d image

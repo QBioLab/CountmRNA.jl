@@ -202,11 +202,13 @@ function grant_domain( _raw_imgs::Array{Gray{Normed{UInt16,16}},4},
 end
 
 " Using given mask to export roi of cell "
-function pick_cell(_raw_imgs::Array{Gray{Normed{UInt16,16}},4}, _longlived_maps::Array{Integer,3},
+#function pick_cell(_raw_imgs::Array{Gray{Normed{UInt16,16}},4}, _longlived_maps::Array{Integer,3},
+function pick_cell(_raw_imgs, _longlived_maps::Array{Integer,3},
 					cell_label::Int64, cell_tracks::Array{Float64,2}, cell_livingtime::BitArray{1})
     h, w, z_depth, t_len = size(_raw_imgs)
     roi = 240
-    cell_img = zeros(Gray{Normed{UInt16,16}}, 2*roi, 2*roi, z_depth, t_len)
+    #cell_img = zeros(Gray{Normed{UInt16,16}}, 2*roi, 2*roi, z_depth, t_len)
+    cell_img = zeros(eltype(_raw_imgs), 2*roi, 2*roi, z_depth, t_len)
     @inbounds Threads.@threads for t in (1:t_len)[cell_livingtime] 
 		# only choose frame when object exist
         bounder = box(cell_tracks[:, t], h, w, α=roi)

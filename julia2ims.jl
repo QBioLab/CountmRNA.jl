@@ -12,6 +12,7 @@ Version Commit
 0.1		hf, first verion
 0.2     hf, update API to follow upstream HDF5.jl v0.15.4
 TODO: genrate thumb and fix timestamps
+      add function to append image
 """
 
 "Save 4D UInt16 Array(x,y,z,t) to .ims file"
@@ -90,7 +91,7 @@ function  save2ims(array, fname::String="myfile.ims";
     end
 
     h5open(fname, "w") do file
-         for grp in GROUPS
+        for grp in GROUPS
             create_group(file, grp)
         end
 
@@ -124,6 +125,36 @@ function  save2ims(array, fname::String="myfile.ims";
     end
 	fname
 end
+
+
+"Append image to exits imaris5 file"
+#=
+function ims_append(fname, img)
+    # find orignal array size
+    h5open(fname, "r+") do file
+        # add data
+        for t in 0:nt-1
+            for c in 0:nc-1
+                data = array[:, :, :, t+1]
+                for r in 0:nr-1
+                    edges, count = build_histogram(data, 256)
+                    grp = create_group(file, "/DataSet/ResolutionLevel $r/TimePoint $t/Channel $c/")
+                    grp["Histogram"] = UInt64.(count[1:end])
+                    h5a_write_S1(grp, "HistogramMin", "1000")
+                    h5a_write_S1(grp, "HistogramMax", "$(edges[end])")
+                    grp["Data", chunk= chunks , compress=compression] = data
+                    #grp["Data", "chunk", (256,256,4)] = data
+                    h5a_write_S1(grp, "ImageSizeX", "$(size(data)[1])")
+                    h5a_write_S1(grp, "ImageSizeY", "$(size(data)[2])")
+                    h5a_write_S1(grp, "ImageSizeZ", "$(size(data)[3])")
+                end
+            end
+        end
+    end
+
+
+end
+=#
 
 "Encode string with ASCII S1"
 function h5a_write_S1(parent, key, value)

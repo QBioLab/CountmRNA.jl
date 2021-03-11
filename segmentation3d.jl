@@ -1,4 +1,4 @@
-using FileIO
+#using FileIO
 using Images
 using Statistics
 
@@ -32,7 +32,7 @@ function create3dmask(zstack)
     mask = zstack .> threshold_3d
     #remove_small_area!(mask)
     mask, mask_size = remove_small_area(mask)
-    mask, mask_size, threshold_3d
+    return mask, mask_size, threshold_3d
 end
 
 function extract3dnucleus(stack)
