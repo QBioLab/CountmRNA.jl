@@ -1,6 +1,6 @@
 using HDF5
 using Dates 
-using Images
+#using Images
 #https://portal.hdfgroup.org/display/HDF5/Introduction+to+HDF5
 #https://imaris.oxinst.com/support/imaris-file-format
 # https://github.com/imaris/ImarisWriter/blob/master/doc/Imaris5FileFormat.pdf
@@ -193,12 +193,14 @@ function loadims(imsname::String)
     local x_depth = str2int(attr_x_len)
     local y_depth = str2int(attr_y_len)
     local z_depth = str2int(attr_z_len)
-    local img = zeros(Gray{N0f16}, x_depth, y_depth, z_depth, t_len);
+    #local img = zeros(Gray{N0f16}, x_depth, y_depth, z_depth, t_len);
+    local img = zeros(UInt16, x_depth, y_depth, z_depth, t_len);
     h5open(imsname, "r") do imsfile
         for i in 1:t_len
             data = read(imsfile, 
                         "DataSet/ResolutionLevel 0/TimePoint $(i-1)/Channel 0/Data")
-            img[:, :, :, i] = reinterpret(N0f16, data)
+            #img[:, :, :, i] = reinterpret(N0f16, data)
+            img[:, :, :, i] = data
         end
     end
     return img
