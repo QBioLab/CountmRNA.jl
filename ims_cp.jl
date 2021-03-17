@@ -54,7 +54,7 @@ function ims_cp(ims_root::String, ims_array::String, ims_creation::String, outpu
                                     #println(e["batchrunresults"]["result"])
                                     batchrunresults = e["batchrunresults"][1]["result"]
                                     for result in batchrunresults
-                                        if attribute(result, "status") == "FINISHED"
+                                        if attribute(result, "status") == "FINISHED" && !isempty(attribute(result, "output"))
                                             id = attribute(result, "input")
                                             outputpath = attribute(result, "outputpath")
                                             src_scene = replace(outputpath, "file:/"=>"$ims_root")
