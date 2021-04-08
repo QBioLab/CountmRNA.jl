@@ -26,17 +26,22 @@ end
 Use LoG fiter raw image to extract cell
 """
 function split_cell_LoG(stack::Array{Gray{Normed{UInt16,16}},4}; 
-                        LoG::Integer=40, thres = -2e-7)
+                        LoG::Integer=40, thres = -1e-7)
 	println("Applying LoG(40) at Maximum Z Projection")
     #img_edge = zeros(N0f16, 1900, 1300, time);
     #mask_edge = zeros(Int16, 1900, 1300, time);
     h, w, d, time = size(stack)
-    local mask_markers = zeros(Bool, h, w, time);
+    #local mask_markers = zeros(Bool, h, w, time);
+    local mask_markers = Array{Bool}(undef, h, w, time);
 	GC.gc() # garbage clean imediately to avoid double free insize threads.@threads
-    @inbounds Threads.@threads for t in 1:time  #use 40 threads slow down speed. may due to gc time
+    #@inbounds Threads.@threads for t in 1:time  #use 40 threads slow down speed. may due to gc time
+    @inbounds for t in 1:time  #use 40 threads slow down speed. may due to gc time
 		# remove possion noise with median filter on maximum z-project image
-		local imgx = mapwindow(median!, 
-                               maximum(view(stack, :, :, :, t), dims=3)[:,:,1], (5,5));
+		#local imgx = mapwindow(median!, 
+        # maximum(view(stack, :, :, :, t), dims=3)[:,:,1], (5,5));
+        # LoG will blur image to low image struture under \sigma,
+        # So I remove median filter
+        local imgx = maximum(view(stack, :, :, :, t), dims=3)[:,:,1];
 		# extract intensity info with LoG
         mask_markers[:,:,t] = imfilter(imgx, Kernel.LoG(LoG)) .< thres ;
         #imgx_dist = distance_transform(feature_transform(imgx_log));

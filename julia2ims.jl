@@ -42,7 +42,7 @@ function  save2ims(array, fname::String="myfile.ims";
     ]
     
     # Attributes of Imaris file
-    ATTRS = [
+o   ATTRS = [
         ("/", "ImarisDataSet", "ImarisDataSet"),
         ("/", "ImarisVersion", "5.5.0"),
         ("/", "DataSetInfoDirectoryName", "DataSetInfo"),
@@ -194,7 +194,8 @@ function loadims(imsname::String)
     local y_depth = str2int(attr_y_len)
     local z_depth = str2int(attr_z_len)
     #local img = zeros(Gray{N0f16}, x_depth, y_depth, z_depth, t_len);
-    local img = zeros(UInt16, x_depth, y_depth, z_depth, t_len);
+    #local img = zeros(UInt16, x_depth, y_depth, z_depth, t_len);
+    local img = Array{UInt16}(undef, x_depth, y_depth, z_depth, t_len);
     h5open(imsname, "r") do imsfile
         for i in 1:t_len
             data = read(imsfile, 

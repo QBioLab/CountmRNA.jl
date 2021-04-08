@@ -5,7 +5,7 @@ using ImageSegmentation
 Version Comment
 0.1		initial
 0.2		extract time-lines and split contacted branches. hf@0427
-0.2.1	add error handle to avoid no longlived_cell hf@0512
+-1.2.1	add error handle to avoid no longlived_cell hf@0512
 """
 
 # Get living time
@@ -13,7 +13,7 @@ cal_livingtime(stack) = [ sum(stack[:, :, i])>0 for i in 1:size(stack)[3] ]
 area_t(stack) = [ sum(stack[:, :, i]) for i in 1:size(stack)[3] ]
 function get_unique_label(_old_labels, number::Int=1)
     i = 100 # start from 100 to distiguish with oldest labels
-	labels = zeros(Integer, number)
+	labels = zeros(UInt, number)
 	for count in 1:number
 	    while( i ∈ _old_labels)
         	i+=1
@@ -27,14 +27,14 @@ end
 "Find long-lived track by searching connected components in 3D"
 function find_time_line(markers_t; shortest=90)
     println("Finding connected component")
-    local time_line = label_components( markers_t.>0 )
+    local time_line = label_components( markers_t )
     local time_line_whole = copy(time_line)
     local line_amount = maximum(time_line)
     # More advanced and fine punch and merge could be done
     # But we just select long living trajactory, remove short-lived one
     # Calculate living length
     x_len, y_len, t_len = size(time_line)
-    local n = zeros(Int64, t_len, line_amount+1)
+    local n = zeros(UInt32, t_len, line_amount+1)
     # label 0 mean background
     @inbounds Threads.@threads for t in 1:t_len
         @inbounds for x in 1:x_len
@@ -92,24 +92,26 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
     
     # split 3d branch by split 2d cell slice by slice
     for contacted_label in contacted_labels
-        dist_const = 30 # distance constant 
+        dist_const = 30 # distance constant, 与接触时间和距离有关
         local contacted_branch = old_time_line .==  contacted_label
         local dist  = zeros(size( contacted_branch ))
         local local_markers = zeros(Bool, size( contacted_branch ))
         println("Splitting branch $contacted_label now")
-        Threads.@threads for  t in 1:t_len # TODO: only split when connected component descrease
+        Threads.@threads for  t in 1:t_len # TODO: only split at contacted time point
             dist[:,:, t] = distance_transform(feature_transform(.~contacted_branch[:,:,t]))
             local_markers[:,:,t] = dist[:,:,t] .> dist_const
             #split_water = watershed( .- dist[:,:,t], label_components(markers[:,:,t]))
             # 直接用 dist 可能会错误打断完整轨迹，需额外膨胀
-            # 用分水岭 可能会误连，需额外腐蚀
+            # 用分水岭 可能会误连，需额外腐蚀，需要更细的 marker
+            # TODO: 用未接触时的 marker 对原图或距离映射做分水岭, 然后收缩
         end
-        local_time_line, local_longlived_labels, local_living_time, local_time_line_whole = find_time_line( local_markers );
+        local_time_line, local_longlived_labels, local_living_time, local_time_line_whole =
+            find_time_line( local_markers, shortest=90);
         
         println("Reassigning contacted branch $contacted_label ")
         # Assign new label to labels set and update mask
         if length(local_longlived_labels) > 0
-            #TODO: what if all lines are shorter than 90 after breaking
+            # TODO: what if all lines are shorter than 90 after breaking
             # remove old branch, old label, old living time.
             @inbounds for point in eachindex(old_time_line)
                 if old_time_line[point] == contacted_label 
@@ -139,7 +141,7 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
 			global_label_max = maximum(old_time_line_whole)
 			tmp = get_unique_label(1:global_label_max, local_label_max - length(local_longlived_labels))
 			tmp_index = 1 
-			global_labels = zeros(Integer, local_label_max+1)
+			global_labels = zeros(UInt, local_label_max+1)
             for i in 1:local_label_max
                 if i ∉ local_longlived_labels
 					# preserve 1th index for 0, so start at 2
@@ -158,7 +160,6 @@ function split_contacted_cell!(old_time_line::Array{Int64,3},
     #old_time_line, old_longlived_labels, old_living_time, old_time_line_whole
 	nothing
 end
-
 
 "extract walking pathway, [xy, time, labels]"
 function walking(_time_line, _longlived_labels, _livingtime)
@@ -180,14 +181,14 @@ function grant_domain( _raw_imgs::Array{Gray{Normed{UInt16,16}},4},
                       _time_line, _longlived_labels, _livingtime, _time_line_whole)
     h, w, z_depth, t_len = size(_raw_imgs)
     watershed_maps = zeros(Integer, h, w, t_len)
-    println("Grant domain for each detected cell by watershed")
+    println("Granting domain for each detected cell by watershed")
     @time @inbounds Threads.@threads for t in 1:t_len 
-        #print("-")
+        # watershed cost lots of time rather than maximal projection
+        # TODO: 
         watershed_maps[:, :, t] = labels_map(watershed(
-                .-maximum(_raw_imgs[:,:,:,t],dims=3)[:,:,1], _time_line_whole[:,:,t]) )
+                .-maximum(_raw_imgs[:,:,2:end-1,t],dims=3)[:,:,1], _time_line_whole[:,:,t]) )
     end
     
-	println("")
 	println("Drawing longlived_maps")
     longlived_maps = zeros(Integer, h, w, t_len)
 	@inbounds Threads.@threads for I in eachindex(longlived_maps)
@@ -198,16 +199,13 @@ function grant_domain( _raw_imgs::Array{Gray{Normed{UInt16,16}},4},
 
 	println(_longlived_labels)
     longlived_maps, watershed_maps
-    #longlived_maps
 end
 
 " Using given mask to export roi of cell "
-#function pick_cell(_raw_imgs::Array{Gray{Normed{UInt16,16}},4}, _longlived_maps::Array{Integer,3},
 function pick_cell(_raw_imgs, _longlived_maps::Array{Integer,3},
-					cell_label::Int64, cell_tracks::Array{Float64,2}, cell_livingtime::BitArray{1})
+					cell_label::Int, cell_tracks::Array{Float64,2}, cell_livingtime::BitArray{1})
     h, w, z_depth, t_len = size(_raw_imgs)
     roi = 240
-    #cell_img = zeros(Gray{Normed{UInt16,16}}, 2*roi, 2*roi, z_depth, t_len)
     cell_img = zeros(eltype(_raw_imgs), 2*roi, 2*roi, z_depth, t_len)
     @inbounds Threads.@threads for t in (1:t_len)[cell_livingtime] 
 		# only choose frame when object exist
