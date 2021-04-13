@@ -1,0 +1,51 @@
+ERROR: LoadError: TaskFailedException:
+UndefVarError: remove_small_area not defined
+Stacktrace:
+ [1] create3dmask(::Array{Gray{Normed{UInt16,16}},3}) at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/segmentation3d.jl:33
+ [2] macro expansion at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/segmentation3d.jl:49 [inlined]
+ [3] (::var"#179#threadsfor_fun#22"{Array{Gray{Normed{UInt16,16}},3},Array{Gray{Normed{UInt16,16}},3},Array{Float64,1},Array{Float64,1},UnitRange{Int64}})(::Bool) at ./threadingconstructs.jl:61
+ [4] (::var"#179#threadsfor_fun#22"{Array{Gray{Normed{UInt16,16}},3},Array{Gray{Normed{UInt16,16}},3},Array{Float64,1},Array{Float64,1},UnitRange{Int64}})() at ./threadingconstructs.jl:28
+Stacktrace:
+ [1] wait(::Task) at ./task.jl:267
+ [2] macro expansion at ./threadingconstructs.jl:69 [inlined]
+ [3] extract3dnucleus at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/segmentation3d.jl:46 [inlined]
+ [4] macro expansion at ./util.jl:175 [inlined]
+ [5] playing(::Int64) at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test15.jl:36
+ [6] macro expansion at ./util.jl:175 [inlined]
+ [7] top-level scope at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test15.jl:49
+ [8] include(::Module, ::String) at ./Base.jl:377
+ [9] exec_options(::Base.JLOptions) at ./client.jl:288
+ [10] _start() at ./client.jl:484
+in expression starting at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test15.jl:48
+Loading 11
+226.906063 seconds (3.42 M allocations: 34.673 GiB, 0.42% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+125.315130 seconds (348.13 M allocations: 75.175 GiB, 37.48% gc time)
+Finding connected component
+  7.279594 seconds (179.93 k allocations: 4.934 GiB, 0.19% gc time)
+Detecting contacted branch
+  5.923156 seconds (1.38 M allocations: 49.314 GiB, 16.25% gc time)
+Found contacted branch: [2, 13, 16]
+Splitting branch 2 now
+Finding connected component
+Reassigning contacted branch 2 
+Splitting branch 13 now
+Finding connected component
+Reassigning contacted branch 13 
+Branch 13 -> 100
+Branch 13 -> 101
+Splitting branch 16 now
+Finding connected component
+Reassigning contacted branch 16 
+ 36.826227 seconds (3.93 M allocations: 100.044 GiB, 9.67% gc time)
+Grant domain for each detected cell by watershed
+ 44.868765 seconds (1.81 M allocations: 28.169 GiB, 29.86% gc time)
+
+Drawing longlived_maps
+[2, 3, 4, 8, 9, 15, 16, 23, 31, 100, 101]
+ 50.959920 seconds (1.90 M allocations: 32.778 GiB, 26.32% gc time)
+tracking cell 1
+  4.067262 seconds (12.71 M allocations: 2.708 GiB, 55.32% gc time)
+Extracting nucleus

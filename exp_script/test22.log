@@ -1,0 +1,419 @@
+Processing /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322, output /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322_result/output
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T15:10:08.178 Loading 1
+245.322786 seconds (1.08 M allocations: 29.497 GiB, 0.47% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+128.152185 seconds (325.73 M allocations: 86.042 GiB, 34.20% gc time)
+Finding connected component
+  6.890256 seconds (179.98 k allocations: 6.313 GiB, 0.20% gc time)
+Detecting contacted branch
+  4.492535 seconds (1.22 M allocations: 12.664 GiB, 18.67% gc time)
+Found contacted branch: [26, 29]
+Splitting branch 26 now
+Finding connected component
+Reassigning contacted branch 26 
+Splitting branch 29 now
+Finding connected component
+Reassigning contacted branch 29 
+ 31.623441 seconds (3.69 M allocations: 55.966 GiB, 11.84% gc time)
+Grant domain for each detected cell by watershed
+ 47.395867 seconds (1.84 M allocations: 38.290 GiB, 26.53% gc time)
+
+Drawing longlived_maps
+[26, 29]
+ 55.649554 seconds (1.87 M allocations: 44.185 GiB, 23.76% gc time)
+tracking cell 1
+  7.354860 seconds (19.98 M allocations: 3.917 GiB, 56.89% gc time)
+Extracting nucleus
+ 24.536706 seconds (9.40 M allocations: 34.092 GiB, 67.26% gc time)
+  2.323718 seconds (2.75 M allocations: 4.946 GiB, 2.12% gc time)
+tracking cell 2
+  4.003626 seconds (20.19 M allocations: 3.974 GiB, 35.75% gc time)
+Extracting nucleus
+ 20.983929 seconds (2.52 M allocations: 33.937 GiB, 75.16% gc time)
+  1.575420 seconds (3.80 k allocations: 4.863 GiB, 1.97% gc time)
+
+real	10m19.008s
+user	142m31.452s
+sys	10m7.316s
+ERROR: LoadError: ArgumentError: invalid base 10 digit '.' in "3..4"
+Stacktrace:
+ [1] tryparse_internal(::Type{Int64}, ::String, ::Int64, ::Int64, ::Int64, ::Bool) at ./parse.jl:132
+ [2] parse(::Type{Int64}, ::String; base::Nothing) at ./parse.jl:238
+ [3] parse at ./parse.jl:238 [inlined]
+ [4] top-level scope at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test22.jl:51
+ [5] include(::Module, ::String) at ./Base.jl:377
+ [6] exec_options(::Base.JLOptions) at ./client.jl:288
+ [7] _start() at ./client.jl:484
+in expression starting at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test22.jl:51
+Processing /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322, output /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322_result/output
+
+real	0m35.273s
+user	0m34.773s
+sys	0m1.964s
+Processing /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322, output /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322_result/output
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T15:21:02.872 Loading 5
+266.728006 seconds (1.08 M allocations: 29.497 GiB, 0.39% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+127.328752 seconds (325.72 M allocations: 86.042 GiB, 39.03% gc time)
+Finding connected component
+  7.069544 seconds (179.88 k allocations: 6.312 GiB, 0.24% gc time)
+Detecting contacted branch
+  4.471009 seconds (1.18 M allocations: 12.662 GiB, 16.88% gc time)
+Found contacted branch: [18]
+Splitting branch 18 now
+Finding connected component
+Reassigning contacted branch 18 
+ 16.579246 seconds (3.65 M allocations: 34.366 GiB, 9.86% gc time)
+Grant domain for each detected cell by watershed
+ 54.496845 seconds (1.84 M allocations: 38.222 GiB, 28.71% gc time)
+
+Drawing longlived_maps
+[5, 18]
+ 62.935773 seconds (1.87 M allocations: 44.117 GiB, 25.90% gc time)
+tracking cell 1
+  9.146896 seconds (27.87 M allocations: 4.857 GiB, 56.83% gc time)
+Extracting nucleus
+ 24.638109 seconds (9.40 M allocations: 34.337 GiB, 66.30% gc time)
+  2.406514 seconds (2.75 M allocations: 4.979 GiB, 2.38% gc time)
+tracking cell 2
+  6.817384 seconds (27.87 M allocations: 4.889 GiB, 43.17% gc time)
+Extracting nucleus
+ 22.705023 seconds (2.52 M allocations: 34.140 GiB, 73.81% gc time)
+  1.578663 seconds (3.81 k allocations: 4.933 GiB, 1.36% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T15:31:16.526 Loading 6
+266.857636 seconds (34.20 k allocations: 29.446 GiB, 0.85% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+117.116234 seconds (309.72 M allocations: 85.267 GiB, 35.31% gc time)
+Finding connected component
+  6.338343 seconds (581 allocations: 6.304 GiB, 0.18% gc time)
+Detecting contacted branch
+  3.411466 seconds (42.46 k allocations: 6.309 GiB, 17.54% gc time)
+Found contacted branch: Int64[]
+  3.414361 seconds (42.50 k allocations: 6.309 GiB, 17.53% gc time)
+Grant domain for each detected cell by watershed
+ 53.335586 seconds (22.88 k allocations: 37.988 GiB, 28.99% gc time)
+
+Drawing longlived_maps
+[6]
+ 60.886663 seconds (23.11 k allocations: 43.882 GiB, 25.42% gc time)
+tracking cell 1
+  6.377316 seconds (19.79 M allocations: 3.926 GiB, 58.70% gc time)
+Extracting nucleus
+ 21.236741 seconds (2.52 M allocations: 33.872 GiB, 74.42% gc time)
+  1.462479 seconds (3.78 k allocations: 4.844 GiB, 0.94% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T15:39:47.844 Loading 7
+265.969246 seconds (34.20 k allocations: 29.446 GiB, 0.98% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+128.628810 seconds (309.67 M allocations: 85.266 GiB, 33.04% gc time)
+Finding connected component
+  6.510309 seconds (483 allocations: 6.304 GiB, 0.21% gc time)
+Detecting contacted branch
+  4.502944 seconds (62.68 k allocations: 18.918 GiB, 18.60% gc time)
+Found contacted branch: Int64[]
+  4.503104 seconds (62.72 k allocations: 18.918 GiB, 18.60% gc time)
+Grant domain for each detected cell by watershed
+ 56.145044 seconds (22.57 k allocations: 38.161 GiB, 29.27% gc time)
+
+Drawing longlived_maps
+[16, 27, 30]
+ 64.395719 seconds (22.81 k allocations: 44.055 GiB, 26.59% gc time)
+tracking cell 1
+ 10.042647 seconds (31.13 M allocations: 5.278 GiB, 53.31% gc time)
+Extracting nucleus
+ 18.046670 seconds (2.52 M allocations: 34.216 GiB, 73.54% gc time)
+  0.879157 seconds (3.81 k allocations: 4.847 GiB, 1.94% gc time)
+tracking cell 2
+  5.695152 seconds (24.67 M allocations: 4.508 GiB, 32.59% gc time)
+Extracting nucleus
+ 22.580677 seconds (2.52 M allocations: 34.016 GiB, 76.61% gc time)
+  1.121304 seconds (3.80 k allocations: 4.897 GiB, 1.58% gc time)
+tracking cell 3
+  5.923266 seconds (26.11 M allocations: 4.680 GiB, 38.21% gc time)
+Extracting nucleus
+ 18.948018 seconds (2.52 M allocations: 34.045 GiB, 72.22% gc time)
+  0.790750 seconds (3.80 k allocations: 4.844 GiB, 1.63% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T15:50:18.086 Loading 8
+272.112394 seconds (34.20 k allocations: 29.446 GiB, 0.64% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+163.999623 seconds (309.80 M allocations: 85.268 GiB, 30.38% gc time)
+Finding connected component
+  6.470956 seconds (498 allocations: 6.304 GiB, 0.17% gc time)
+No longlived cells found, skipping
+
+real	37m14.298s
+user	532m3.310s
+sys	38m34.828s
+Processing /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322, output /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322_result/output
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T15:58:17.006 Loading 9
+274.289424 seconds (1.08 M allocations: 29.497 GiB, 0.41% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+106.146469 seconds (325.63 M allocations: 86.041 GiB, 36.43% gc time)
+Finding connected component
+  9.212517 seconds (179.99 k allocations: 6.312 GiB, 0.13% gc time)
+Detecting contacted branch
+  4.270030 seconds (1.13 M allocations: 6.356 GiB, 13.89% gc time)
+Found contacted branch: [7]
+Splitting branch 7 now
+Finding connected component
+Reassigning contacted branch 7 
+ 16.975245 seconds (3.60 M allocations: 28.059 GiB, 6.95% gc time)
+Grant domain for each detected cell by watershed
+ 53.144908 seconds (1.84 M allocations: 38.134 GiB, 26.58% gc time)
+
+Drawing longlived_maps
+[7]
+ 60.796557 seconds (1.87 M allocations: 44.029 GiB, 23.25% gc time)
+tracking cell 1
+  8.013363 seconds (27.29 M allocations: 4.788 GiB, 55.54% gc time)
+Extracting nucleus
+ 24.530992 seconds (9.40 M allocations: 34.359 GiB, 65.89% gc time)
+  2.719397 seconds (2.75 M allocations: 4.983 GiB, 2.15% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T16:07:13.914 Loading 10
+267.784693 seconds (34.20 k allocations: 29.446 GiB, 0.99% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+119.215294 seconds (309.69 M allocations: 85.266 GiB, 35.70% gc time)
+Finding connected component
+  6.337330 seconds (561 allocations: 6.304 GiB, 0.36% gc time)
+Detecting contacted branch
+  3.470478 seconds (42.47 k allocations: 6.309 GiB, 18.80% gc time)
+Found contacted branch: Int64[]
+  3.470939 seconds (42.51 k allocations: 6.309 GiB, 18.80% gc time)
+Grant domain for each detected cell by watershed
+ 50.769585 seconds (22.44 k allocations: 38.171 GiB, 27.50% gc time)
+
+Drawing longlived_maps
+[5]
+ 58.935879 seconds (22.68 k allocations: 44.065 GiB, 24.65% gc time)
+tracking cell 1
+  8.315608 seconds (25.03 M allocations: 4.551 GiB, 53.27% gc time)
+Extracting nucleus
+ 17.756304 seconds (2.52 M allocations: 33.952 GiB, 69.47% gc time)
+  1.516275 seconds (3.79 k allocations: 4.842 GiB, 1.05% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T16:15:44.039 Loading 11
+261.098632 seconds (34.20 k allocations: 29.446 GiB, 0.67% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+101.010481 seconds (309.62 M allocations: 85.265 GiB, 39.77% gc time)
+Finding connected component
+  6.433693 seconds (603 allocations: 6.304 GiB, 0.21% gc time)
+No longlived cells found, skipping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T16:21:53.393 Loading 12
+257.663847 seconds (34.20 k allocations: 29.446 GiB, 0.58% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+117.862480 seconds (309.65 M allocations: 85.265 GiB, 35.30% gc time)
+Finding connected component
+  6.497542 seconds (532 allocations: 6.303 GiB, 0.18% gc time)
+No longlived cells found, skipping
+
+real	30m34.446s
+user	365m15.280s
+sys	36m44.347s
+Processing /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322, output /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322_result/output
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T16:28:51.057 Loading 13
+316.407859 seconds (1.08 M allocations: 29.497 GiB, 0.32% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+120.942909 seconds (325.68 M allocations: 86.042 GiB, 35.30% gc time)
+Finding connected component
+  7.310133 seconds (179.86 k allocations: 6.312 GiB, 0.17% gc time)
+Detecting contacted branch
+  4.314494 seconds (1.19 M allocations: 12.662 GiB, 16.56% gc time)
+Found contacted branch: Int64[]
+  4.440477 seconds (1.43 M allocations: 12.674 GiB, 16.09% gc time)
+Grant domain for each detected cell by watershed
+ 56.322405 seconds (1.84 M allocations: 38.212 GiB, 28.95% gc time)
+
+Drawing longlived_maps
+[4, 6]
+ 65.216588 seconds (1.87 M allocations: 44.107 GiB, 26.00% gc time)
+tracking cell 1
+  8.968083 seconds (30.37 M allocations: 5.155 GiB, 58.24% gc time)
+Extracting nucleus
+ 17.565461 seconds (9.41 M allocations: 34.655 GiB, 52.08% gc time)
+  2.351091 seconds (2.75 M allocations: 4.971 GiB, 2.39% gc time)
+tracking cell 2
+  8.729462 seconds (38.06 M allocations: 6.104 GiB, 47.23% gc time)
+Extracting nucleus
+ 16.184723 seconds (2.52 M allocations: 34.451 GiB, 64.98% gc time)
+  1.487772 seconds (3.84 k allocations: 4.853 GiB, 2.32% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T16:39:18.467 Loading 14
+312.093891 seconds (34.20 k allocations: 29.446 GiB, 0.81% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+110.507246 seconds (309.64 M allocations: 85.265 GiB, 38.05% gc time)
+Finding connected component
+  6.437423 seconds (485 allocations: 6.303 GiB, 0.23% gc time)
+Detecting contacted branch
+  3.764970 seconds (42.35 k allocations: 6.309 GiB, 20.38% gc time)
+Found contacted branch: Int64[]
+  3.765080 seconds (42.39 k allocations: 6.309 GiB, 20.38% gc time)
+Grant domain for each detected cell by watershed
+ 48.812323 seconds (20.95 k allocations: 37.005 GiB, 21.63% gc time)
+
+Drawing longlived_maps
+[2]
+ 57.184185 seconds (21.18 k allocations: 42.899 GiB, 19.70% gc time)
+tracking cell 1
+  8.334012 seconds (26.41 M allocations: 4.716 GiB, 57.29% gc time)
+Extracting nucleus
+ 20.777252 seconds (2.52 M allocations: 34.077 GiB, 72.11% gc time)
+  1.576773 seconds (3.81 k allocations: 4.853 GiB, 1.06% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T16:48:26.621 Loading 15
+328.245045 seconds (34.20 k allocations: 29.446 GiB, 0.66% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+146.764826 seconds (309.74 M allocations: 85.267 GiB, 32.85% gc time)
+Finding connected component
+  6.407747 seconds (470 allocations: 6.303 GiB, 0.31% gc time)
+Detecting contacted branch
+  3.858893 seconds (42.51 k allocations: 6.309 GiB, 20.72% gc time)
+Found contacted branch: [4]
+Splitting branch 4 now
+Finding connected component
+Reassigning contacted branch 4 
+Branch 4 -> 100
+ 17.231658 seconds (2.35 M allocations: 28.005 GiB, 9.05% gc time)
+Grant domain for each detected cell by watershed
+ 61.964582 seconds (18.16 k allocations: 32.878 GiB, 29.58% gc time)
+
+Drawing longlived_maps
+[100]
+ 69.587577 seconds (18.39 k allocations: 38.772 GiB, 26.36% gc time)
+tracking cell 1
+  8.327646 seconds (22.01 M allocations: 4.191 GiB, 55.19% gc time)
+Extracting nucleus
+ 20.455630 seconds (2.51 M allocations: 33.811 GiB, 73.38% gc time)
+  1.671465 seconds (3.77 k allocations: 4.846 GiB, 0.69% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T16:58:51.851 Loading 16
+348.921518 seconds (34.20 k allocations: 29.446 GiB, 0.60% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+104.453418 seconds (309.65 M allocations: 85.265 GiB, 36.10% gc time)
+Finding connected component
+  8.557597 seconds (480 allocations: 6.304 GiB, 1.86% gc time)
+Detecting contacted branch
+  3.771527 seconds (42.53 k allocations: 6.309 GiB, 15.57% gc time)
+Found contacted branch: Int64[]
+  3.771648 seconds (42.58 k allocations: 6.309 GiB, 15.57% gc time)
+Grant domain for each detected cell by watershed
+ 47.330443 seconds (22.34 k allocations: 38.109 GiB, 25.28% gc time)
+
+Drawing longlived_maps
+[4]
+ 56.278627 seconds (22.57 k allocations: 44.003 GiB, 22.41% gc time)
+tracking cell 1
+  8.427709 seconds (28.62 M allocations: 4.979 GiB, 58.80% gc time)
+Extracting nucleus
+ 18.507584 seconds (2.52 M allocations: 34.183 GiB, 69.80% gc time)
+  1.500130 seconds (3.82 k allocations: 4.863 GiB, 1.13% gc time)
+
+real	40m14.687s
+user	495m8.834s
+sys	39m41.050s
+Processing /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322, output /datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200322_result/output
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T17:09:06.008 Loading 17
+328.288932 seconds (1.08 M allocations: 29.497 GiB, 0.38% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+109.113625 seconds (325.68 M allocations: 86.042 GiB, 37.38% gc time)
+Finding connected component
+  8.700512 seconds (179.93 k allocations: 6.312 GiB, 0.15% gc time)
+Detecting contacted branch
+  4.083311 seconds (1.13 M allocations: 6.356 GiB, 14.25% gc time)
+Found contacted branch: Int64[]
+  4.210988 seconds (1.37 M allocations: 6.368 GiB, 13.82% gc time)
+Grant domain for each detected cell by watershed
+ 50.404492 seconds (1.84 M allocations: 38.157 GiB, 27.40% gc time)
+
+Drawing longlived_maps
+[4]
+ 59.781793 seconds (1.87 M allocations: 44.052 GiB, 24.56% gc time)
+tracking cell 1
+ 10.751880 seconds (36.87 M allocations: 5.930 GiB, 59.11% gc time)
+Extracting nucleus
+ 20.289738 seconds (9.41 M allocations: 34.737 GiB, 57.54% gc time)
+  2.605724 seconds (2.75 M allocations: 4.962 GiB, 1.86% gc time)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T17:18:44.937 Loading 18
+335.635869 seconds (34.20 k allocations: 29.446 GiB, 0.67% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+100.095221 seconds (309.63 M allocations: 85.265 GiB, 41.11% gc time)
+Finding connected component
+  6.318401 seconds (426 allocations: 6.303 GiB, 0.19% gc time)
+No longlived cells found, skipping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T17:26:07.47 Loading 19
+330.206083 seconds (34.20 k allocations: 29.446 GiB, 0.52% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+104.825999 seconds (309.65 M allocations: 85.266 GiB, 38.51% gc time)
+Finding connected component
+  8.310069 seconds (538 allocations: 6.304 GiB, 0.14% gc time)
+No longlived cells found, skipping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2020-05-13T17:33:31.258 Loading 20
+335.793185 seconds (34.20 k allocations: 29.446 GiB, 0.53% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+100.899458 seconds (309.66 M allocations: 85.266 GiB, 37.99% gc time)
+Finding connected component
+  8.593667 seconds (489 allocations: 6.304 GiB, 0.17% gc time)
+Detecting contacted branch
+  3.808110 seconds (42.68 k allocations: 6.309 GiB, 19.99% gc time)
+Found contacted branch: Int64[]
+  3.808257 seconds (42.72 k allocations: 6.309 GiB, 19.99% gc time)
+Grant domain for each detected cell by watershed
+ 55.066091 seconds (22.10 k allocations: 38.004 GiB, 27.72% gc time)
+
+Drawing longlived_maps
+[3]
+ 63.954238 seconds (22.33 k allocations: 43.897 GiB, 24.88% gc time)
+tracking cell 1
+  6.888807 seconds (28.94 M allocations: 5.017 GiB, 70.97% gc time)
+Extracting nucleus
+ 16.351541 seconds (2.52 M allocations: 34.308 GiB, 67.19% gc time)
+  1.520215 seconds (3.83 k allocations: 4.847 GiB, 1.10% gc time)
+
+real	34m27.027s
+user	346m39.571s
+sys	34m31.090s

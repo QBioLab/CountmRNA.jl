@@ -1,0 +1,757 @@
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s20
+215.578594 seconds (3.42 M allocations: 38.814 GiB, 0.33% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+164.882441 seconds (388.20 M allocations: 84.106 GiB, 36.08% gc time)
+Finding connected component
+  6.094736 seconds (179.86 k allocations: 5.525 GiB, 0.24% gc time)
+Detecting contacted branch
+  4.931817 seconds (1.14 M allocations: 11.084 GiB, 20.35% gc time)
+Found contacted branch: [1]
+Splitting branch 1 now
+Finding connected component
+Reassigning contacted branch 1 
+Branch 1 -> 100
+ 17.193416 seconds (3.71 M allocations: 30.092 GiB, 10.04% gc time)
+Grant domain for each detected cell by watershed
+ 48.590295 seconds (1.82 M allocations: 32.824 GiB, 30.54% gc time)
+
+Drawing longlived_maps
+[15, 100]
+ 55.861417 seconds (1.90 M allocations: 37.986 GiB, 27.49% gc time)
+tracking cell 1
+  7.297687 seconds (21.54 M allocations: 3.908 GiB, 54.33% gc time)
+Extracting nucleus
+ 21.172872 seconds (9.08 M allocations: 30.053 GiB, 63.10% gc time)
+  2.312683 seconds (2.75 M allocations: 4.378 GiB, 2.81% gc time)
+tracking cell 2
+  7.244770 seconds (31.22 M allocations: 5.093 GiB, 48.63% gc time)
+Extracting nucleus
+ 14.008471 seconds (2.21 M allocations: 30.114 GiB, 61.26% gc time)
+  1.391626 seconds (3.41 k allocations: 4.283 GiB, 1.94% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s21
+228.262754 seconds (2.02 M allocations: 38.737 GiB, 0.22% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+123.550570 seconds (371.98 M allocations: 83.329 GiB, 41.95% gc time)
+Finding connected component
+  4.719890 seconds (509 allocations: 5.516 GiB, 0.27% gc time)
+Detecting contacted branch
+  3.148185 seconds (37.31 k allocations: 5.520 GiB, 23.87% gc time)
+Found contacted branch: [31]
+Splitting branch 31 now
+Finding connected component
+Reassigning contacted branch 31 
+ 12.170930 seconds (41.74 k allocations: 24.419 GiB, 12.96% gc time)
+Grant domain for each detected cell by watershed
+ 51.505254 seconds (20.68 k allocations: 33.046 GiB, 31.35% gc time)
+
+Drawing longlived_maps
+[31]
+ 57.650094 seconds (20.91 k allocations: 38.204 GiB, 28.97% gc time)
+tracking cell 1
+  5.570593 seconds (19.62 M allocations: 3.710 GiB, 64.22% gc time)
+Extracting nucleus
+ 14.600275 seconds (2.21 M allocations: 29.768 GiB, 70.60% gc time)
+  0.825805 seconds (3.39 k allocations: 4.268 GiB, 1.65% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s22
+219.574833 seconds (27.07 k allocations: 38.647 GiB, 0.17% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+139.716455 seconds (372.12 M allocations: 83.331 GiB, 37.00% gc time)
+Finding connected component
+  4.972962 seconds (508 allocations: 5.516 GiB, 0.20% gc time)
+Detecting contacted branch
+  3.684349 seconds (55.20 k allocations: 16.553 GiB, 20.64% gc time)
+Found contacted branch: [4, 8, 12]
+Splitting branch 4 now
+Finding connected component
+Reassigning contacted branch 4 
+Splitting branch 8 now
+Finding connected component
+Reassigning contacted branch 8 
+Splitting branch 12 now
+Finding connected component
+Reassigning contacted branch 12 
+Branch 12 -> 100
+ 28.566854 seconds (70.24 k allocations: 73.248 GiB, 10.80% gc time)
+Grant domain for each detected cell by watershed
+ 48.986441 seconds (20.73 k allocations: 32.867 GiB, 27.43% gc time)
+
+Drawing longlived_maps
+[4, 8, 100]
+ 55.224709 seconds (20.97 k allocations: 38.025 GiB, 25.36% gc time)
+tracking cell 1
+  6.484030 seconds (28.23 M allocations: 4.737 GiB, 57.20% gc time)
+Extracting nucleus
+ 15.439454 seconds (2.21 M allocations: 29.993 GiB, 70.19% gc time)
+  0.957434 seconds (3.41 k allocations: 4.299 GiB, 1.79% gc time)
+tracking cell 2
+  5.115430 seconds (23.52 M allocations: 4.176 GiB, 52.25% gc time)
+Extracting nucleus
+ 14.171296 seconds (2.21 M allocations: 29.923 GiB, 69.76% gc time)
+  0.781333 seconds (3.41 k allocations: 4.336 GiB, 2.22% gc time)
+tracking cell 3
+  4.930238 seconds (25.87 M allocations: 4.455 GiB, 40.11% gc time)
+Extracting nucleus
+ 15.824601 seconds (2.21 M allocations: 30.026 GiB, 74.06% gc time)
+  0.921813 seconds (3.41 k allocations: 4.256 GiB, 1.40% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s23
+216.622826 seconds (27.07 k allocations: 38.647 GiB, 0.19% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+120.729304 seconds (372.10 M allocations: 83.331 GiB, 39.82% gc time)
+Finding connected component
+  4.763233 seconds (464 allocations: 5.516 GiB, 0.20% gc time)
+Detecting contacted branch
+  2.971592 seconds (37.40 k allocations: 5.520 GiB, 21.86% gc time)
+Found contacted branch: [4]
+Splitting branch 4 now
+Finding connected component
+Reassigning contacted branch 4 
+Branch 4 -> 100
+ 11.812716 seconds (42.37 k allocations: 24.419 GiB, 8.69% gc time)
+Grant domain for each detected cell by watershed
+ 44.051161 seconds (21.08 k allocations: 32.690 GiB, 33.84% gc time)
+
+Drawing longlived_maps
+[100]
+ 50.502342 seconds (21.31 k allocations: 37.848 GiB, 31.13% gc time)
+tracking cell 1
+  5.925948 seconds (19.72 M allocations: 3.722 GiB, 63.37% gc time)
+Extracting nucleus
+ 15.514841 seconds (2.21 M allocations: 29.869 GiB, 69.87% gc time)
+  0.719227 seconds (3.40 k allocations: 4.241 GiB, 1.79% gc time)
+
+real	35m14.914s
+user	528m45.573s
+sys	43m33.193s
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s24
+233.172281 seconds (3.42 M allocations: 38.814 GiB, 0.47% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+149.298913 seconds (388.04 M allocations: 84.104 GiB, 33.52% gc time)
+Finding connected component
+  6.063431 seconds (179.84 k allocations: 5.525 GiB, 0.18% gc time)
+Detecting contacted branch
+  4.208964 seconds (1.14 M allocations: 11.084 GiB, 19.04% gc time)
+Found contacted branch: Int64[]
+  4.337888 seconds (1.37 M allocations: 11.095 GiB, 18.58% gc time)
+Grant domain for each detected cell by watershed
+ 50.023057 seconds (1.82 M allocations: 33.026 GiB, 27.51% gc time)
+
+Drawing longlived_maps
+[3, 5]
+ 57.217616 seconds (1.90 M allocations: 38.188 GiB, 24.96% gc time)
+tracking cell 1
+  9.040612 seconds (27.26 M allocations: 4.589 GiB, 56.08% gc time)
+Extracting nucleus
+ 20.034420 seconds (9.08 M allocations: 30.252 GiB, 61.58% gc time)
+  2.117147 seconds (2.75 M allocations: 4.354 GiB, 2.27% gc time)
+tracking cell 2
+  7.389711 seconds (31.06 M allocations: 5.074 GiB, 47.96% gc time)
+Extracting nucleus
+ 14.847390 seconds (2.21 M allocations: 30.131 GiB, 64.59% gc time)
+  1.353803 seconds (3.41 k allocations: 4.263 GiB, 1.01% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s25
+222.562702 seconds (2.02 M allocations: 38.737 GiB, 0.20% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+142.009292 seconds (372.15 M allocations: 83.332 GiB, 37.57% gc time)
+Finding connected component
+  4.682507 seconds (480 allocations: 5.516 GiB, 0.20% gc time)
+Detecting contacted branch
+  3.289244 seconds (46.19 k allocations: 11.037 GiB, 22.66% gc time)
+Found contacted branch: Int64[]
+  3.289352 seconds (46.23 k allocations: 11.037 GiB, 22.66% gc time)
+Grant domain for each detected cell by watershed
+ 52.962637 seconds (20.59 k allocations: 33.089 GiB, 27.46% gc time)
+
+Drawing longlived_maps
+[5, 34]
+ 59.976089 seconds (20.82 k allocations: 38.246 GiB, 25.70% gc time)
+tracking cell 1
+  7.129448 seconds (25.65 M allocations: 4.429 GiB, 62.93% gc time)
+Extracting nucleus
+ 14.677927 seconds (2.21 M allocations: 29.950 GiB, 68.72% gc time)
+  0.872022 seconds (3.40 k allocations: 4.258 GiB, 1.73% gc time)
+tracking cell 2
+  6.282845 seconds (24.89 M allocations: 4.339 GiB, 42.15% gc time)
+Extracting nucleus
+ 19.479589 seconds (2.20 M allocations: 29.747 GiB, 77.00% gc time)
+  0.723912 seconds (3.37 k allocations: 4.231 GiB, 2.17% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s26
+258.175421 seconds (27.07 k allocations: 38.647 GiB, 0.14% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+101.503034 seconds (372.05 M allocations: 83.330 GiB, 46.23% gc time)
+Finding connected component
+  4.580565 seconds (469 allocations: 5.516 GiB, 0.22% gc time)
+No longlived cells found, skipping
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s27
+215.563246 seconds (27.07 k allocations: 38.647 GiB, 0.47% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+139.502808 seconds (372.26 M allocations: 83.333 GiB, 37.13% gc time)
+Finding connected component
+  5.022469 seconds (550 allocations: 5.516 GiB, 0.20% gc time)
+Detecting contacted branch
+  3.699791 seconds (54.64 k allocations: 16.553 GiB, 22.39% gc time)
+Found contacted branch: [2, 5]
+Splitting branch 2 now
+Finding connected component
+Reassigning contacted branch 2 
+Splitting branch 5 now
+Finding connected component
+Reassigning contacted branch 5 
+Branch 5 -> 100
+ 22.852507 seconds (2.56 M allocations: 54.450 GiB, 10.68% gc time)
+Grant domain for each detected cell by watershed
+ 59.224119 seconds (21.21 k allocations: 32.788 GiB, 29.17% gc time)
+
+Drawing longlived_maps
+[2, 29, 100]
+ 64.292695 seconds (21.45 k allocations: 37.945 GiB, 26.88% gc time)
+tracking cell 1
+  6.402755 seconds (19.44 M allocations: 3.689 GiB, 61.24% gc time)
+Extracting nucleus
+ 15.367625 seconds (2.21 M allocations: 29.730 GiB, 66.35% gc time)
+  0.852796 seconds (3.38 k allocations: 4.244 GiB, 1.65% gc time)
+tracking cell 2
+  3.108325 seconds (18.02 M allocations: 3.520 GiB, 42.97% gc time)
+Extracting nucleus
+ 17.084716 seconds (2.20 M allocations: 29.692 GiB, 75.48% gc time)
+  0.790183 seconds (3.38 k allocations: 4.330 GiB, 1.81% gc time)
+tracking cell 3
+  3.614096 seconds (22.25 M allocations: 4.024 GiB, 52.06% gc time)
+Extracting nucleus
+ 15.300580 seconds (2.21 M allocations: 30.025 GiB, 68.72% gc time)
+  0.783139 seconds (3.41 k allocations: 4.243 GiB, 1.75% gc time)
+
+real	34m26.342s
+user	497m18.638s
+sys	43m1.010s
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s28
+230.745895 seconds (3.42 M allocations: 38.814 GiB, 0.35% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+130.688938 seconds (387.91 M allocations: 84.102 GiB, 36.81% gc time)
+Finding connected component
+  6.794846 seconds (179.91 k allocations: 5.525 GiB, 0.39% gc time)
+Detecting contacted branch
+  5.353075 seconds (1.24 M allocations: 22.121 GiB, 18.25% gc time)
+Found contacted branch: [6]
+Splitting branch 6 now
+Finding connected component
+Reassigning contacted branch 6 
+Branch 6 -> 100
+ 18.956821 seconds (3.79 M allocations: 41.128 GiB, 9.18% gc time)
+Grant domain for each detected cell by watershed
+ 49.896176 seconds (1.82 M allocations: 32.977 GiB, 26.75% gc time)
+
+Drawing longlived_maps
+[5, 10, 14, 100]
+ 57.258747 seconds (1.90 M allocations: 38.139 GiB, 24.32% gc time)
+tracking cell 1
+  7.320010 seconds (23.15 M allocations: 4.099 GiB, 54.97% gc time)
+Extracting nucleus
+ 17.424160 seconds (9.08 M allocations: 30.340 GiB, 54.86% gc time)
+  2.186958 seconds (2.75 M allocations: 4.364 GiB, 2.47% gc time)
+tracking cell 2
+  2.609701 seconds (12.47 M allocations: 2.858 GiB, 25.11% gc time)
+Extracting nucleus
+ 17.125463 seconds (2.21 M allocations: 29.698 GiB, 71.91% gc time)
+  1.334681 seconds (3.39 k allocations: 4.241 GiB, 1.33% gc time)
+tracking cell 3
+  4.094601 seconds (20.00 M allocations: 3.756 GiB, 38.40% gc time)
+Extracting nucleus
+ 15.978789 seconds (2.21 M allocations: 29.960 GiB, 69.44% gc time)
+  1.382399 seconds (3.41 k allocations: 4.244 GiB, 1.27% gc time)
+tracking cell 4
+  7.031117 seconds (28.83 M allocations: 4.808 GiB, 48.71% gc time)
+Extracting nucleus
+ 12.490001 seconds (2.21 M allocations: 30.084 GiB, 57.92% gc time)
+  1.344700 seconds (3.42 k allocations: 4.259 GiB, 1.36% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s29
+222.422981 seconds (2.02 M allocations: 38.737 GiB, 0.19% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+118.285856 seconds (372.13 M allocations: 83.331 GiB, 39.86% gc time)
+Finding connected component
+  3.782869 seconds (563 allocations: 5.516 GiB, 0.30% gc time)
+No longlived cells found, skipping
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s30
+211.020656 seconds (27.07 k allocations: 38.647 GiB, 0.44% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+114.531451 seconds (371.99 M allocations: 83.329 GiB, 41.54% gc time)
+Finding connected component
+  4.873363 seconds (554 allocations: 5.516 GiB, 0.27% gc time)
+Detecting contacted branch
+  3.264621 seconds (45.94 k allocations: 11.036 GiB, 21.93% gc time)
+Found contacted branch: Int64[]
+  3.264901 seconds (45.99 k allocations: 11.036 GiB, 21.93% gc time)
+Grant domain for each detected cell by watershed
+ 52.334781 seconds (20.00 k allocations: 33.213 GiB, 28.86% gc time)
+
+Drawing longlived_maps
+[3, 36]
+ 58.659268 seconds (20.23 k allocations: 38.370 GiB, 25.76% gc time)
+tracking cell 1
+  7.662623 seconds (28.82 M allocations: 4.807 GiB, 68.42% gc time)
+Extracting nucleus
+ 12.901647 seconds (2.21 M allocations: 30.101 GiB, 66.28% gc time)
+  0.936753 seconds (3.41 k allocations: 4.245 GiB, 1.52% gc time)
+tracking cell 2
+  4.089161 seconds (22.45 M allocations: 4.048 GiB, 41.17% gc time)
+Extracting nucleus
+ 15.624129 seconds (2.21 M allocations: 29.790 GiB, 71.97% gc time)
+  0.953077 seconds (3.38 k allocations: 4.239 GiB, 1.53% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s31
+224.687545 seconds (27.07 k allocations: 38.647 GiB, 0.17% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+132.516733 seconds (372.13 M allocations: 83.332 GiB, 39.08% gc time)
+Finding connected component
+  4.052087 seconds (527 allocations: 5.516 GiB, 0.31% gc time)
+Detecting contacted branch
+  4.180958 seconds (54.91 k allocations: 16.553 GiB, 23.48% gc time)
+Found contacted branch: [24]
+Splitting branch 24 now
+Finding connected component
+Reassigning contacted branch 24 
+ 12.673198 seconds (59.27 k allocations: 35.451 GiB, 14.05% gc time)
+Grant domain for each detected cell by watershed
+ 45.860304 seconds (21.12 k allocations: 32.344 GiB, 31.35% gc time)
+
+Drawing longlived_maps
+[3, 24, 25]
+ 51.692280 seconds (21.37 k allocations: 37.501 GiB, 29.36% gc time)
+tracking cell 1
+ 10.113139 seconds (33.17 M allocations: 5.326 GiB, 54.30% gc time)
+Extracting nucleus
+ 13.324621 seconds (2.21 M allocations: 30.148 GiB, 67.04% gc time)
+  0.769987 seconds (3.42 k allocations: 4.265 GiB, 1.89% gc time)
+tracking cell 2
+  3.020648 seconds (16.84 M allocations: 3.380 GiB, 38.08% gc time)
+Extracting nucleus
+ 16.233180 seconds (2.21 M allocations: 29.675 GiB, 74.32% gc time)
+  0.805971 seconds (3.38 k allocations: 4.283 GiB, 2.20% gc time)
+tracking cell 3
+  2.867150 seconds (17.76 M allocations: 3.488 GiB, 31.53% gc time)
+Extracting nucleus
+ 16.231140 seconds (2.21 M allocations: 29.721 GiB, 75.05% gc time)
+  0.935581 seconds (3.38 k allocations: 4.248 GiB, 1.55% gc time)
+
+real	34m11.882s
+user	482m52.156s
+sys	43m30.487s
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s32
+232.668985 seconds (3.42 M allocations: 38.814 GiB, 0.41% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+154.060376 seconds (388.15 M allocations: 84.105 GiB, 37.51% gc time)
+Finding connected component
+  6.298242 seconds (180.01 k allocations: 5.524 GiB, 0.17% gc time)
+Detecting contacted branch
+  4.329762 seconds (1.14 M allocations: 16.600 GiB, 16.28% gc time)
+Found contacted branch: [7]
+Splitting branch 7 now
+Finding connected component
+Reassigning contacted branch 7 
+ 16.593631 seconds (3.61 M allocations: 35.604 GiB, 9.58% gc time)
+Grant domain for each detected cell by watershed
+ 47.998752 seconds (1.82 M allocations: 32.561 GiB, 28.29% gc time)
+
+Drawing longlived_maps
+[4, 7, 22]
+ 55.217965 seconds (1.90 M allocations: 37.722 GiB, 25.52% gc time)
+tracking cell 1
+  8.293937 seconds (26.37 M allocations: 4.483 GiB, 58.83% gc time)
+Extracting nucleus
+ 17.084810 seconds (9.08 M allocations: 30.381 GiB, 50.99% gc time)
+  2.158885 seconds (2.75 M allocations: 4.356 GiB, 2.10% gc time)
+tracking cell 2
+  4.611733 seconds (22.14 M allocations: 4.011 GiB, 34.52% gc time)
+Extracting nucleus
+ 15.289636 seconds (2.21 M allocations: 29.853 GiB, 64.87% gc time)
+  1.347028 seconds (3.39 k allocations: 4.242 GiB, 1.73% gc time)
+tracking cell 3
+  3.494389 seconds (17.71 M allocations: 3.483 GiB, 37.53% gc time)
+Extracting nucleus
+ 15.222256 seconds (2.21 M allocations: 29.775 GiB, 66.94% gc time)
+  1.382757 seconds (3.40 k allocations: 4.257 GiB, 1.38% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s33
+221.319819 seconds (2.02 M allocations: 38.737 GiB, 0.19% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+135.825858 seconds (372.16 M allocations: 83.332 GiB, 37.01% gc time)
+Finding connected component
+  5.048769 seconds (465 allocations: 5.516 GiB, 0.18% gc time)
+Detecting contacted branch
+  3.769721 seconds (55.11 k allocations: 16.553 GiB, 18.88% gc time)
+Found contacted branch: [1]
+Splitting branch 1 now
+Finding connected component
+Reassigning contacted branch 1 
+Branch 1 -> 100
+ 13.283204 seconds (252.31 k allocations: 35.457 GiB, 11.02% gc time)
+Grant domain for each detected cell by watershed
+ 49.061351 seconds (20.48 k allocations: 33.030 GiB, 28.86% gc time)
+
+Drawing longlived_maps
+[2, 5, 100]
+ 56.938827 seconds (20.73 k allocations: 38.187 GiB, 25.88% gc time)
+tracking cell 1
+  5.609891 seconds (19.70 M allocations: 3.720 GiB, 59.44% gc time)
+Extracting nucleus
+ 16.516295 seconds (2.20 M allocations: 29.664 GiB, 70.91% gc time)
+  0.950602 seconds (3.37 k allocations: 4.269 GiB, 1.42% gc time)
+tracking cell 2
+  6.226870 seconds (29.36 M allocations: 4.872 GiB, 45.23% gc time)
+Extracting nucleus
+ 12.817268 seconds (2.21 M allocations: 30.029 GiB, 62.59% gc time)
+  0.953617 seconds (3.40 k allocations: 4.268 GiB, 1.40% gc time)
+tracking cell 3
+  4.626984 seconds (22.66 M allocations: 4.074 GiB, 34.25% gc time)
+Extracting nucleus
+ 16.868454 seconds (2.20 M allocations: 29.746 GiB, 73.68% gc time)
+  0.897635 seconds (3.37 k allocations: 4.235 GiB, 1.48% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s34
+217.124197 seconds (27.07 k allocations: 38.647 GiB, 0.18% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+106.028778 seconds (372.09 M allocations: 83.331 GiB, 44.87% gc time)
+Finding connected component
+  4.398900 seconds (489 allocations: 5.516 GiB, 0.24% gc time)
+Detecting contacted branch
+  4.125388 seconds (64.18 k allocations: 22.070 GiB, 19.39% gc time)
+Found contacted branch: [11]
+Splitting branch 11 now
+Finding connected component
+Reassigning contacted branch 11 
+ 12.519069 seconds (68.65 k allocations: 40.968 GiB, 9.67% gc time)
+Grant domain for each detected cell by watershed
+ 43.098934 seconds (20.71 k allocations: 32.489 GiB, 33.67% gc time)
+
+Drawing longlived_maps
+[5, 6, 11, 20]
+ 49.177030 seconds (20.95 k allocations: 37.647 GiB, 30.63% gc time)
+tracking cell 1
+  8.231880 seconds (31.23 M allocations: 5.095 GiB, 60.84% gc time)
+Extracting nucleus
+ 13.723710 seconds (2.21 M allocations: 30.126 GiB, 58.22% gc time)
+  1.043527 seconds (3.42 k allocations: 4.287 GiB, 1.16% gc time)
+tracking cell 2
+  6.113807 seconds (33.14 M allocations: 5.322 GiB, 54.84% gc time)
+Extracting nucleus
+ 13.817054 seconds (2.21 M allocations: 30.145 GiB, 68.38% gc time)
+  0.726546 seconds (3.41 k allocations: 4.252 GiB, 1.72% gc time)
+tracking cell 3
+  3.019001 seconds (19.88 M allocations: 3.742 GiB, 51.08% gc time)
+Extracting nucleus
+ 14.542942 seconds (2.21 M allocations: 29.865 GiB, 71.30% gc time)
+  0.721575 seconds (3.31 k allocations: 4.217 GiB, 1.86% gc time)
+tracking cell 4
+  2.885845 seconds (18.42 M allocations: 3.568 GiB, 36.55% gc time)
+Extracting nucleus
+ 18.389317 seconds (2.20 M allocations: 29.689 GiB, 76.80% gc time)
+  0.734271 seconds (3.37 k allocations: 4.258 GiB, 1.98% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s35
+222.849348 seconds (27.07 k allocations: 38.647 GiB, 0.18% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+127.722356 seconds (372.09 M allocations: 83.331 GiB, 42.34% gc time)
+Finding connected component
+  5.378942 seconds (411 allocations: 5.516 GiB, 0.23% gc time)
+Detecting contacted branch
+  4.087703 seconds (64.27 k allocations: 22.070 GiB, 19.82% gc time)
+Found contacted branch: [2, 5, 7]
+Splitting branch 2 now
+Finding connected component
+Reassigning contacted branch 2 
+Branch 2 -> 100
+Splitting branch 5 now
+Finding connected component
+Reassigning contacted branch 5 
+Branch 5 -> 101
+Splitting branch 7 now
+Finding connected component
+Reassigning contacted branch 7 
+Branch 7 -> 102
+ 34.326400 seconds (262.69 k allocations: 78.768 GiB, 7.32% gc time)
+Grant domain for each detected cell by watershed
+ 48.028502 seconds (21.72 k allocations: 32.956 GiB, 30.88% gc time)
+
+Drawing longlived_maps
+[18, 100, 101, 102]
+ 53.690448 seconds (21.96 k allocations: 38.113 GiB, 28.68% gc time)
+tracking cell 1
+  6.030814 seconds (19.83 M allocations: 3.736 GiB, 49.80% gc time)
+Extracting nucleus
+ 17.058974 seconds (2.20 M allocations: 29.678 GiB, 74.24% gc time)
+  0.986740 seconds (3.37 k allocations: 4.237 GiB, 1.34% gc time)
+tracking cell 2
+  5.148161 seconds (24.85 M allocations: 4.334 GiB, 47.69% gc time)
+Extracting nucleus
+ 15.757968 seconds (2.21 M allocations: 29.945 GiB, 71.16% gc time)
+  0.713378 seconds (3.40 k allocations: 4.261 GiB, 1.82% gc time)
+tracking cell 3
+  7.421156 seconds (32.49 M allocations: 5.245 GiB, 49.38% gc time)
+Extracting nucleus
+ 15.647668 seconds (2.21 M allocations: 30.045 GiB, 69.68% gc time)
+  0.755480 seconds (3.40 k allocations: 4.326 GiB, 1.81% gc time)
+tracking cell 4
+  3.931361 seconds (20.41 M allocations: 3.805 GiB, 33.40% gc time)
+Extracting nucleus
+ 23.158391 seconds (2.21 M allocations: 29.822 GiB, 81.84% gc time)
+  0.707280 seconds (3.39 k allocations: 4.233 GiB, 1.91% gc time)
+
+real	39m55.375s
+user	592m6.836s
+sys	46m8.782s
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s36
+232.146009 seconds (3.42 M allocations: 38.814 GiB, 0.40% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+157.473709 seconds (388.11 M allocations: 84.105 GiB, 33.54% gc time)
+Finding connected component
+  6.364292 seconds (179.94 k allocations: 5.525 GiB, 0.20% gc time)
+Detecting contacted branch
+  4.966126 seconds (1.20 M allocations: 22.119 GiB, 18.90% gc time)
+Found contacted branch: [2, 3]
+Splitting branch 2 now
+Finding connected component
+Reassigning contacted branch 2 
+Branch 2 -> 100
+Splitting branch 3 now
+Finding connected component
+Reassigning contacted branch 3 
+ 28.316305 seconds (3.78 M allocations: 60.026 GiB, 9.69% gc time)
+Grant domain for each detected cell by watershed
+ 48.897756 seconds (1.81 M allocations: 32.807 GiB, 27.22% gc time)
+
+Drawing longlived_maps
+[3, 10, 11, 100]
+ 56.172996 seconds (1.90 M allocations: 37.969 GiB, 24.62% gc time)
+tracking cell 1
+  7.844172 seconds (28.68 M allocations: 4.758 GiB, 55.64% gc time)
+Extracting nucleus
+ 18.768817 seconds (9.08 M allocations: 30.366 GiB, 58.50% gc time)
+  2.186406 seconds (2.75 M allocations: 4.385 GiB, 2.63% gc time)
+tracking cell 2
+  6.092857 seconds (26.85 M allocations: 4.573 GiB, 46.72% gc time)
+Extracting nucleus
+ 14.688579 seconds (2.21 M allocations: 30.083 GiB, 64.49% gc time)
+  1.320666 seconds (3.41 k allocations: 4.258 GiB, 1.23% gc time)
+tracking cell 3
+  6.688933 seconds (30.47 M allocations: 5.004 GiB, 40.94% gc time)
+Extracting nucleus
+ 13.994343 seconds (2.21 M allocations: 30.114 GiB, 64.19% gc time)
+  1.315978 seconds (3.42 k allocations: 4.259 GiB, 0.97% gc time)
+tracking cell 4
+  4.142592 seconds (19.97 M allocations: 3.752 GiB, 36.79% gc time)
+Extracting nucleus
+ 17.161739 seconds (2.21 M allocations: 29.787 GiB, 70.00% gc time)
+  1.447981 seconds (3.38 k allocations: 4.247 GiB, 1.32% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s37
+237.271329 seconds (2.02 M allocations: 38.737 GiB, 0.19% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+120.432528 seconds (371.99 M allocations: 83.329 GiB, 39.72% gc time)
+Finding connected component
+  4.649462 seconds (592 allocations: 5.516 GiB, 0.20% gc time)
+Detecting contacted branch
+  3.393358 seconds (46.29 k allocations: 11.037 GiB, 21.25% gc time)
+Found contacted branch: [15]
+Splitting branch 15 now
+Finding connected component
+Reassigning contacted branch 15 
+ 14.276872 seconds (50.65 k allocations: 29.935 GiB, 10.37% gc time)
+Grant domain for each detected cell by watershed
+ 47.368574 seconds (20.82 k allocations: 32.645 GiB, 29.38% gc time)
+
+Drawing longlived_maps
+[3, 15]
+ 53.466339 seconds (21.05 k allocations: 37.802 GiB, 26.05% gc time)
+tracking cell 1
+  8.535386 seconds (31.48 M allocations: 5.125 GiB, 59.43% gc time)
+Extracting nucleus
+ 14.914060 seconds (2.21 M allocations: 30.133 GiB, 67.61% gc time)
+  0.757449 seconds (3.42 k allocations: 4.247 GiB, 1.64% gc time)
+tracking cell 2
+  2.905772 seconds (20.55 M allocations: 3.822 GiB, 41.94% gc time)
+Extracting nucleus
+ 16.823756 seconds (2.21 M allocations: 29.836 GiB, 73.73% gc time)
+  0.957759 seconds (3.39 k allocations: 4.242 GiB, 1.34% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s38
+223.069402 seconds (27.07 k allocations: 38.647 GiB, 0.18% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+122.179380 seconds (372.10 M allocations: 83.331 GiB, 39.80% gc time)
+Finding connected component
+  4.666594 seconds (540 allocations: 5.516 GiB, 0.20% gc time)
+Detecting contacted branch
+  3.050904 seconds (37.37 k allocations: 5.520 GiB, 19.36% gc time)
+Found contacted branch: [2]
+Splitting branch 2 now
+Finding connected component
+Reassigning contacted branch 2 
+ 11.694625 seconds (42.02 k allocations: 24.419 GiB, 10.19% gc time)
+Grant domain for each detected cell by watershed
+ 41.502177 seconds (20.86 k allocations: 32.816 GiB, 24.92% gc time)
+
+Drawing longlived_maps
+[2]
+ 47.701520 seconds (21.10 k allocations: 37.974 GiB, 22.92% gc time)
+tracking cell 1
+  7.262032 seconds (29.47 M allocations: 4.885 GiB, 59.54% gc time)
+Extracting nucleus
+ 12.817495 seconds (2.21 M allocations: 30.081 GiB, 67.16% gc time)
+  0.771803 seconds (3.41 k allocations: 4.262 GiB, 2.21% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s39
+219.190651 seconds (27.07 k allocations: 38.647 GiB, 0.17% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+130.088932 seconds (372.07 M allocations: 83.331 GiB, 38.42% gc time)
+Finding connected component
+  6.509009 seconds (558 allocations: 5.516 GiB, 0.19% gc time)
+Detecting contacted branch
+  3.729883 seconds (54.76 k allocations: 16.553 GiB, 21.14% gc time)
+Found contacted branch: [7, 9, 31]
+Splitting branch 7 now
+Finding connected component
+Reassigning contacted branch 7 
+Splitting branch 9 now
+Finding connected component
+Reassigning contacted branch 9 
+Branch 9 -> 100
+Splitting branch 31 now
+Finding connected component
+Reassigning contacted branch 31 
+ 34.654246 seconds (100.65 k allocations: 73.248 GiB, 8.04% gc time)
+Grant domain for each detected cell by watershed
+ 53.418768 seconds (20.89 k allocations: 32.844 GiB, 35.97% gc time)
+
+Drawing longlived_maps
+[7, 31, 100]
+ 60.254420 seconds (21.13 k allocations: 38.002 GiB, 32.82% gc time)
+tracking cell 1
+  5.162010 seconds (15.98 M allocations: 3.277 GiB, 57.35% gc time)
+Extracting nucleus
+ 13.423316 seconds (2.20 M allocations: 29.618 GiB, 67.75% gc time)
+  0.767813 seconds (3.37 k allocations: 4.238 GiB, 1.74% gc time)
+tracking cell 2
+  3.168939 seconds (18.67 M allocations: 3.597 GiB, 44.79% gc time)
+Extracting nucleus
+ 16.991086 seconds (2.20 M allocations: 29.695 GiB, 75.19% gc time)
+  0.720469 seconds (3.37 k allocations: 4.238 GiB, 1.88% gc time)
+tracking cell 3
+  3.842751 seconds (23.31 M allocations: 4.150 GiB, 47.17% gc time)
+Extracting nucleus
+ 19.547911 seconds (2.21 M allocations: 29.885 GiB, 77.97% gc time)
+  0.930658 seconds (3.39 k allocations: 4.244 GiB, 1.50% gc time)
+
+real	37m45.247s
+user	557m46.704s
+sys	44m58.383s
+Error encountered while loading "/datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200317/HE7-11-1-80uw-PWM_1_s41.ome.tiff".
+
+Fatal error:
+ERROR: LoadError: UnableToOpenBlob `/datahub/rawdata/tandeng/mRNA_imaging/mRNA_confocal_hamamatsu-60X-TIRF/20200317/HE7-11-1-80uw-PWM_1_s41.ome.tiff': 没有那个文件或目录 @ error/blob.c/OpenBlob/2873
+Stacktrace:
+ [1] handle_error(::ErrorException, ::File{DataFormat{:TIFF}}) at /home/hf/.julia/packages/FileIO/ZknoK/src/error_handling.jl:82
+ [2] handle_exceptions(::Array{Any,1}, ::String) at /home/hf/.julia/packages/FileIO/ZknoK/src/error_handling.jl:77
+ [3] load(::Formatted; options::Base.Iterators.Pairs{Union{},Union{},Tuple{},NamedTuple{(),Tuple{}}}) at /home/hf/.julia/packages/FileIO/ZknoK/src/loadsave.jl:186
+ [4] load at /home/hf/.julia/packages/FileIO/ZknoK/src/loadsave.jl:166 [inlined]
+ [5] macro expansion at ./util.jl:175 [inlined]
+ [6] playing(::Int64) at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test17.jl:15
+ [7] top-level scope at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test17.jl:45
+ [8] include(::Module, ::String) at ./Base.jl:377
+ [9] exec_options(::Base.JLOptions) at ./client.jl:288
+ [10] _start() at ./client.jl:484
+in expression starting at /datahub/rawdata/tandeng/mRNA_imaging/CoutingmRNA.jl/test17.jl:44
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s40
+228.692293 seconds (3.42 M allocations: 38.814 GiB, 0.44% gc time)
+Load done
+Applying LoG(40) at Maximum Z Projection
+Done
+143.921138 seconds (388.09 M allocations: 84.105 GiB, 39.12% gc time)
+Finding connected component
+  6.246259 seconds (179.94 k allocations: 5.525 GiB, 0.23% gc time)
+Detecting contacted branch
+  4.155398 seconds (1.19 M allocations: 16.603 GiB, 17.62% gc time)
+Found contacted branch: [31]
+Splitting branch 31 now
+Finding connected component
+Reassigning contacted branch 31 
+Branch 31 -> 100
+ 16.599488 seconds (3.75 M allocations: 35.611 GiB, 9.26% gc time)
+Grant domain for each detected cell by watershed
+ 49.075411 seconds (1.82 M allocations: 32.417 GiB, 28.00% gc time)
+
+Drawing longlived_maps
+[4, 5, 100]
+ 56.609769 seconds (1.90 M allocations: 37.578 GiB, 25.54% gc time)
+tracking cell 1
+  7.702024 seconds (30.81 M allocations: 5.013 GiB, 64.81% gc time)
+Extracting nucleus
+ 16.035860 seconds (9.08 M allocations: 30.414 GiB, 50.83% gc time)
+  2.259004 seconds (2.75 M allocations: 4.405 GiB, 2.75% gc time)
+tracking cell 2
+  5.643734 seconds (25.23 M allocations: 4.379 GiB, 40.58% gc time)
+Extracting nucleus
+ 14.686727 seconds (2.21 M allocations: 30.014 GiB, 65.27% gc time)
+  1.313510 seconds (3.42 k allocations: 4.301 GiB, 1.23% gc time)
+tracking cell 3
+  4.505308 seconds (21.53 M allocations: 3.938 GiB, 34.09% gc time)
+Extracting nucleus
+ 14.589774 seconds (2.21 M allocations: 29.780 GiB, 67.15% gc time)
+  1.386466 seconds (3.39 k allocations: 4.246 GiB, 0.96% gc time)
+--------------------------------------------------------
+Loading HE7-11-1-80uw-PWM_1_s41
+
+real	10m38.775s
+user	144m21.553s
+sys	12m18.982s
