@@ -110,5 +110,5 @@ just distance transform
 
 ## Licence
 MIT License
-
+Cite as: eLife 2021;10:e65654 doi: 10.7554/eLife.65654 
 Copyright (c) 2020 H.F.
